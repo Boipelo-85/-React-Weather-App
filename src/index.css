@@ -109,3 +109,382 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+
+/* Main Weather Content Part */
+
+.main-weather-card {
+  background: rgba(139, 69, 19, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-width: 320px;
+  max-width: 400px;
+  color: white;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.main-weather-card:hover {
+  background: rgba(139, 69, 19, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.current-weather {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.current-weather h1 {
+  font-size: 72px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1;
+}
+
+.current-weather span {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 24px 0;
+}
+
+.forecast-title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.toggle-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.toggle-btn.active {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.daily-forecast-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+/* Daily forecast styilng */
+
+.daily-forecast-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+
+.daily-forecast-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.forecast-day-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 100px;
+}
+
+.forecast-weather {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.weather-icon {
+  font-size: 24px;
+}
+
+.temperature {
+  font-size: 18px;
+  min-width: 50px;
+  text-align: right;
+}
+
+/* Search Bar Styles */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search-input {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+}
+
+.search-button {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.search-button:hover {
+  background: var(--accent-border);
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background: var(--code-bg);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+.sidebar-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-item {
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.sidebar-item:hover {
+  background: var(--accent-bg);
+}
+
+/* Forecast Panel Styles */
+.current-temperature {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.daily-forecast {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--code-bg);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.forecast-date {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 100px;
+}
+
+.forecast-temps {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.forecast-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.forecast-tab {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.forecast-tab:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+
+.forecast-tab.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Statistics Card Styles */
+.hourly-forecast-card {
+  background: var(--code-bg);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+.hourly-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hourly-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-radius: 8px;
+}
+
+.hourly-icon {
+  font-size: 20px;
+}
+
+.temperature-chart {
+  background: var(--code-bg);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+.chart-container {
+  margin-top: 16px;
+}
+
+.chart-bars {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  height: 200px;
+}
+
+.chart-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.chart-bar {
+  width: 100%;
+  background: var(--accent);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+  min-height: 4px;
+}
+
+/* Saved Locations Styles */
+.saved-locations {
+  background: var(--code-bg);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+.locations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.location-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-radius: 8px;
+}
+
+.location-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.location-temp {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.remove-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.remove-btn:hover {
+  background: var(--accent);
+  color: white;
+}

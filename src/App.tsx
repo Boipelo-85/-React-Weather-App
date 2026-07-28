@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import './App.css'
 import { Text } from './Components/Text/Text';
+import { MainWeatherCard } from './Components/MainWeatherCard/MainWeatherCard';
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
                 <div id='sub-container'>
                   
                           <Text variant={'h1'} style={{color:'white'}}> Boipelo </Text>
+                          <MainWeatherCard />
+
                 </div>
               
             </div>
