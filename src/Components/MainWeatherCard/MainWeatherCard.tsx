@@ -24,17 +24,26 @@ export const MainWeatherCard = () => {
         <>
         <div className='main-weather-card'>
 
-             <div className='Hourly-forecast'>
-                            <Text variant={'span'}> Current Location</Text>
-                             <Text variant={'h3'}> Weather Forecast</Text>
-                             <Text variant={'h1'}> Overcast cloudy </Text>
-                             <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
-                </div> 
+           
+                            <div>
+                                <img src={cloudyPicture} alt="cloudy picture" className='weatherPic'/>
+                            </div>
+                             
+                            <div>
+                                <Text variant={'h3'}>Days</Text>
+                            </div>
+              
         </div>
         
                   <div className='weatherDisplay'>
 
-                            <img src={cloudyPicture} alt="cloudy picture" className='weatherPic'/>
+                           <Text variant={'span'}> Current Location</Text>
+                            <Text variant={'h3'}> Weather Forecast</Text>
+                             <Text variant={'h1'}> Overcast cloudy </Text>
+                             <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
+                                <Text variant={'h1'}> Overcast cloudy </Text>
+                             <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
+                             
 
                   </div>
    

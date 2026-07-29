@@ -22,7 +22,9 @@ function App() {
                   
                           <SearchBar value={search} onChange={setSearch} /> 
                           <Text variant={'h1'} style={{color:'white'}}> Boipelo </Text> 
-                          <MainWeatherCard />
+                          <div className='weather-cards-container'>
+                            <MainWeatherCard />
+                          </div>
                 </div>              
             </div>
         </div>

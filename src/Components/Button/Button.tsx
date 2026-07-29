@@ -1,15 +1,36 @@
+import React from 'react'
+
+
+
 type ButtonProp = {
+
+
+
         label : string,
-        className?: string,
-        onClick?: () => void
+
+        className?: string
+
 }
-export const Button = ({label,className, onClick}: ButtonProp) => {
+
+export const Button:React.FC<ButtonProp> = ({label,className}) => {
+
   return (
+
+
+
     <button 
-        className={`${className || ''}`}
-        onClick={onClick}
+
+    
+
+         className={`${className || ''}`}
+
     >
+
         {label}
+
     </button>
+
   )
+
 }
+
