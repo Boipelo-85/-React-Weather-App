@@ -2,10 +2,14 @@ import { useState } from 'react'
 
 import './App.css'
 import { Text } from './Components/Text/Text';
+import { Header } from './Components/Header/Header';
 import { MainWeatherCard } from './Components/MainWeatherCard/MainWeatherCard';
+import { SearchBar } from './Components/SearchBar/SearchBar';
+
 
 function App() {
 
+  const [search,setSearch] = useState('');
 
   return (
     <>    
@@ -16,11 +20,10 @@ function App() {
 
                 <div id='sub-container'>
                   
-                          <Text variant={'h1'} style={{color:'white'}}> Boipelo </Text>
+                          <SearchBar value={search} onChange={setSearch} /> 
+                          <Text variant={'h1'} style={{color:'white'}}> Boipelo </Text> 
                           <MainWeatherCard />
-
-                </div>
-              
+                </div>              
             </div>
         </div>
 
