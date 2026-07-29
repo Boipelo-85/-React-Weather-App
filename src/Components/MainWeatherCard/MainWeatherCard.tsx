@@ -15,7 +15,7 @@ export const MainWeatherCard = () => {
         { day: 'Saturday', date: 'Dec 14', weather: 'Light Rain', temperature: 23, icon: '🌧️' },
         { day: 'Sunday', date: 'Dec 15', weather: 'Partly Sunny', temperature: 27, icon: '⛅' },
         { day: 'Monday', date: 'Dec 16', weather: 'Partly Cloudy', temperature: 26, icon: '⛅' },
-        { day: 'Tuesday', date: 'Dec 17', weather: 'Light Rain', temperature: 23, icon: '🌧️' },
+        
     ]
 
     return (
