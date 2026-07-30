@@ -137,12 +137,14 @@ code {
 .search-logo{
 
   position: relative;
-  width: 25px;
+  width: 30px;
   height: 25px;
   color:#fdfdfd;
   /* background-color: #fdfdfd; */
 
-  left: 30px;
+  left: 150px;
+  flex: 1;
+
   
 }   
 .search-bar{
@@ -150,7 +152,13 @@ code {
   padding: 9px 25px;
   border-radius: 10px;
   border: 1px solid white;
+  padding-top: 10px;
   
+}
+.location{
+
+    padding: 0 5px;
+    flex: 1px;
 }
 /* .search-content{
 

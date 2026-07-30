@@ -6,27 +6,25 @@ type ButtonProp = {
 
 
 
-        label : string,
+  label: string,
 
-        className?: string
+  className?: string
 
 }
 
-export const Button:React.FC<ButtonProp> = ({label,className}) => {
+export const Button: React.FC<ButtonProp> = ({ label, className }) => {
 
   return (
 
 
 
-    <button 
+    <button
 
-    
-
-         className={`${className || ''}`}
+      className={`${className || ''}`}
 
     >
 
-        {label}
+      {label}
 
     </button>
 
