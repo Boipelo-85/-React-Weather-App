@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 interface WeatherData {
 
   location: string
+
 }
 
 export type SearchProp = {
@@ -49,7 +50,7 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange }) => {
 
   useEffect(() => {
 
-          weatherSearch("London");
+        
   },[])
   return (
 
@@ -58,13 +59,14 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange }) => {
       <nav className='nav'>
 
         <div className='Heading-items'>
-          <Text variant={'span'} style={{ color: '#fdfdfd', padding: '0px 120px', paddingLeft: '10px', fontWeight: 'bold', fontSize: '20px' }}>Weather forecast</Text>
 
-          <Text variant={'span'} style={{ color: '#fdfdfd', padding: '0px 120px' }}> <FaLocationDot className='location' />{weather?.location} </Text>
-    
+          <Text variant={'span'} style={{ color: '#fdfdfd', fontWeight: 'bold', fontSize: '30px' , paddingRight: '270px',paddingLeft: '15px',fontFamily: "'Courier New', Courier, monospace"}}>Weather forecast</Text>
+
+          <Text variant={'span'} style={{ color: '#fdfdfd',paddingRight: '25px',fontFamily: "'Courier New', Courier, monospace",fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location} </Text>
+
             <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
             <input type="text" ref={inputRef}   className='search-bar' placeholder='Search City' value={value} onChange={(e) => onChange(e.target.value)} />
- 
+            
         </div>
       </nav>
     </div>

@@ -113,6 +113,8 @@ code {
 
 /* NavBar content */
 
+
+
 .nav{
   
    /* left :0;
@@ -134,6 +136,13 @@ code {
   left: 0;
   
 }
+.Heading-items {
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  
+}
 .search-logo{
 
   position: relative;
@@ -141,11 +150,10 @@ code {
   height: 25px;
   color:#fdfdfd;
   /* background-color: #fdfdfd; */
-
-  left: 150px;
+  left: 165px;
   flex: 1;
+  cursor: pointer;
 
-  
 }   
 .search-bar{
 
@@ -157,13 +165,13 @@ code {
 }
 .location{
 
-    padding: 0 5px;
+    padding: 0 7px;
     flex: 1px;
+
 }
 /* .search-content{
 
   
-
   display: flex;
   justify-content: space-between;
   gap: 50px;
@@ -183,7 +191,7 @@ code {
 }
 
 .main-weather-card {
-  background: rgb(139, 69, 19, 0.4);
+  background-color: #fdfdfd;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 24px;
@@ -193,8 +201,12 @@ code {
   margin-left: -100px;
   box-shadow: 0 8px 32px rgb(0, 0, 0, 0.3);
   
-  max-width: 350px;
+  max-width: 360px;
   color: white;
+  overflow: hidden;
+   width: 430px;
+  display: flex;
+  flex-direction: column;
   
 }
 
@@ -224,17 +236,54 @@ code {
     padding: 10px;
     padding-right: 10px;
     width: 100%;
-    height: 50%;
+    height: 30%;
 }
 .weatherPic{
 
-      width: 50%;
-      height: 50%;
       border-radius: 20px;
       padding: 0px;
-      
+      height: 20px;
       
 }
+.weatherItems{
+
+  background-color: #e2d6d6;
+  padding: 0 20px;
+  border-radius: 10px;
+
+}
+.card-image-container {
+  
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  background-image: url('./assets/cloudy.jpg');
+  border-radius: 24px;
+  
+}
+.picture-content{
+
+      padding-top:190px;
+}
+.card-image-container .weatherPic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  width: 100%;
+  height: 80%;
+  border-radius: 24px 24px 0 0;
+  padding-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:20px;
+  padding-right: 10px;
+  
+}
+
 /* .main-weather-card:hover {
   background: rgba(139, 69, 19, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
