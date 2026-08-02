@@ -16,7 +16,7 @@ interface WeatherData {
 }
 
 interface MainWeatherCardProps {
-    city: string
+    city?: string
 }
 
 export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
@@ -33,46 +33,16 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
     // ]
 
     const [weather, setWeather] = useState<WeatherData | null>(null);
-    const [currentCity, setCurrentCity] = useState<string>(city);
+    // const allIcons = {
 
-    // Get current location on component mount
-    useEffect(() => {
-      // If no city is provided, try to get user's location
-      if (!city) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              // Get coordinates
-              const latitude = position.coords.latitude;
-              const longitude = position.coords.longitude;
-              
-              // Use coordinates to get city name and weather
-              fetch(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${import.meta.env.VITE_APP_ID}`
-              )
-                .then(response => response.json())
-                .then(data => {
-                  setCurrentCity(data.name);
-                })
-                .catch(() => {
-                  setCurrentCity('London'); // Use London if it fails
-                });
-            },
-            () => {
-              setCurrentCity('London'); // Use London if user denies location
-            }
-          );
-        } else {
-          setCurrentCity('London'); // Use London if browser doesn't support geolocation
-        }
-      }
-    }, [city]);
+    //         // "01d" : clear_icon
 
-    const weatherInfo = useCallback(async (cityName: string) => {
+    // }
+    const weatherInfo = useCallback(async (city: string) => {
 
         try {
 
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
 
             const response = await fetch(url)
             const data = await response.json();
@@ -93,10 +63,12 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
     }, [])
 
     useEffect(() => {
-        if (currentCity) {
-            weatherInfo(currentCity);
+        if (city) {
+            weatherInfo(city);
+        } else {
+            weatherInfo('Polokwane');
         }
-    }, [currentCity, weatherInfo])
+    }, [city, weatherInfo])
     return (
 
         <>
@@ -107,7 +79,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     {/* <img src={cloudyPicture} alt="cloudy picture" className='weatherPic' /> */}
                     <div  className='picture-content'>
                         <Text variant={'span'} style={{color:'#fdfdfd',fontSize:'35px',paddingTop: '170px',paddingRight:'190px',fontFamily: "'Courier New', Courier, monospace"}}> {weather?.temperature}°</Text>
-                        <Text variant={'span'} style={{color:'#fdfdfd',fontSize:'13px',paddingTop: '170px',fontFamily: "'Courier New', Courier, monospace"}}> {weather?.description}</Text>
+                         <Text variant={'span'} style={{color:'#000',fontSize:'13px',paddingTop: '170px',fontFamily: "'Courier New', Courier, monospace"}}> {weather?.description}</Text>
+                        
                     </div>
                 </div>
 
