@@ -6,12 +6,17 @@ export const ForecastTabs = () =>  {
 
   const forecastData = [
 
-        {day : 'Monday'}
+        {day : 'Monday',temperature:'29',icon:'☀️'},
+        {day : 'Monday',temperature:'29',icon:'⛅'},
+        {day : 'Monday',temperature:'29',icon:'☀️'},
+        {day : 'Monday',temperature:'29',icon:'☀️'}
   ]
+
   return (
     
       <>
-
+          
       </>
+      
   )
 };

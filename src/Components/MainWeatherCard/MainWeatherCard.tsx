@@ -2,16 +2,25 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { Text } from '../Text/Text';
 // import { DailyForecastItem } from './DailyForecastItem';
+import clear_icon from '../../assets/cloud.jpg'
+import sunny_icon from '../../assets/sunny_icon.jpg'
+import  cloudyy from '../../assets/cloud.jpg'
+import rainy_icon from '../../assets/rainy_cloud.jpg'
+import sunny_cloud from '../../assets/sunny_cloud.jpg'
+import { CartesianGrid,XAxis,YAxis,Tooltip,LineChart,Line,Legend} from "recharts";
 
-
+import axios from "axios";
+import moment from "moment";
 interface WeatherData {
 
-
-    windSpeed: number,
+    wind_speed: number,
     humidity: string,
-    visibility: number
-    temperature: number
-    description: string
+    visibility: number,
+    temperature: number,
+    description: string,
+    hours:string,
+
+
 
 }
 
@@ -32,33 +41,72 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
     // ]
 
-    const [weather, setWeather] = useState<WeatherData | null>(null);
-    // const allIcons = {
+    const [weather, setWeather] = useState<WeatherData[] | null>(null);
+    const allIcons = {
 
-    //         // "01d" : clear_icon
+            "01d" : clear_icon,
+             "01n" : clear_icon,
+              "02d" : cloudyy,
+               "02n" : cloudyy,
+                "03d" : cloudyy,
+                 "03n" : cloudyy,
+               "04d" : rainy_icon,
+                "04n" : rainy_icon,
+               "09d" : rainy_icon,
+                "09n" : rainy_icon,
+                  "010d" : clear_icon,
+                "10n" : cloudyy,
+                  "13d" : clear_icon,
+                "13n" : cloudyy,
+              
 
-    // }
+    }
     const weatherInfo = useCallback(async (city: string) => {
+        
+// setLoading();
 
         try {
 
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
+          
+            console.log(url);
+            
 
-            const response = await fetch(url)
-            const data = await response.json();
-            console.log(data);
+            // const response = await fetch(url)
+            // const data = await response.json();
+            // console.log(data);
+            // const icon = allIcons[data.weather[0].icon] || clear_icon;
+              const geoResponse = await axios.get(url);
+            
+        
+              const { lat, lon } = geoResponse.data[0];
 
-            setWeather({
+            const response = await axios.get( `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m`)
+              const data = response.data;
 
-                windSpeed: data.wind.speed,
-                humidity: data.main.humidity,
-                visibility: data.visibility,
+            const maxHours = 24;
+            const formattedData: WeatherData[] = data.hourly.time
+                    .slice(0, maxHours)
+                     .map((time: string, index: number) => ({
+                     hour: new Date(time).toLocaleTimeString([], {
+                     hour: "2-digit",
+                     minute: "2-digit",
+                
+          }),
+             wind_speed: data.hourly.wind_speed_10m[index],
+                humidity: data.hourly.relative_humidity_2m[index],
                 temperature: Math.floor(data.main.temp),
-                description: data.weather[0].description
+                description: data.weather[0].description,
+            
+            
 
-            })
-        } catch (error) {
+                
+        }))
+            setWeather(formattedData)
 
+        }catch (error) {
+
+                console.error('Failed to fetch ', error)
         }
     }, [])
 
@@ -69,11 +117,11 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             weatherInfo('Polokwane');
         }
     }, [city, weatherInfo])
+
     return (
 
         <>
             <div className='main-weather-card'>
-
 
                 <div className='card-image-container'>
                     {/* <img src={cloudyPicture} alt="cloudy picture" className='weatherPic' /> */}
@@ -88,7 +136,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     <div className='weatherItems'>
 
                         <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Wind</Text>
-                        <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.windSpeed}km/hr</Text>
+                        <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{}km/hr</Text>
                     </div>
                     <div className='weatherItems'>
                         <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Humidity </Text>
@@ -109,41 +157,42 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
                 <div className='hourlyData'>
 
-
                     <Text variant={'h3'}> Weather Forecast</Text>
                     <Text variant={'h1'}> Overcast cloudy </Text>
                     <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
                     <Text variant={'h1'}> Overcast cloudy </Text>
                     <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
+
                 </div>
                 <div className='card-content'>
 
                      <div className='weatherItems'>
 
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Wind</Text>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.windSpeed}km/hr</Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>10 a.m</Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.temperature}°</Text>
                 </div>
                 <div className='weatherItems'>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Humidity </Text>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.humidity}%</Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> 11 a.m </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.temperature}°</Text>
 
                 </div>
                 <div className='weatherItems'>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Visibility </Text>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.visibility}km</Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> 12 p.m </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.temperature}°</Text>
                 </div>
                   <div className='weatherItems'>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Visibility </Text>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.visibility}km</Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> 1 p.m </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.temperature}°</Text>
                 </div>
                   <div className='weatherItems'>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Visibility </Text>
-                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.visibility}km</Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> 2 p.m </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.temperature}°</Text>
                 </div>
-
+                   <div className='weatherItems'>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> 2 p.m </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.temperature}°</Text>
                 </div>
-
-               
+                </div>
 
             </div>
 
