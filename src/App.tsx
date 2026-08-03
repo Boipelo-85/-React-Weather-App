@@ -11,6 +11,7 @@ import { ThemeToggle } from './Components/ThemeToggle/ThemeToggle';
 function App() {
 
   const [search,setSearch] = useState('');
+  const [city,setCity] = useState('Polokwane');
 
   return (
     <>    
@@ -21,14 +22,14 @@ function App() {
 
                 <div id='sub-container'>
                   
-                          <SearchBar value={search} onChange={setSearch}  /> 
+                          <SearchBar value={search} onChange={setSearch} onSearch={setCity} /> 
                           <Text variant={'h1'} style={{color:'white'}}> Boipelo </Text> 
                           <div className='weather-cards-container'>
-                            <MainWeatherCard />
+                            <MainWeatherCard city={city}/>
                           </div>
-                          <div>
+                          {/* <div>
                             <ThemeToggle />
-                          </div>
+                          </div> */}
                 </div>              
             </div>
         </div>

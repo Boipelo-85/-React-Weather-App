@@ -58,7 +58,7 @@ export const ThemeToggle = () => {
         style={{
           flex: 1,
           textAlign: 'center',
-          color: isDark ? 'white' : '#9ca3af',
+          color: isDark ? 'white' : '#fdfdfd',
           fontSize: '14px',
           fontWeight: '500',
           zIndex: 1

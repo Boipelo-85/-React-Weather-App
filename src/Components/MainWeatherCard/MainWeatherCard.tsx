@@ -77,26 +77,26 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
                 <div className='card-image-container'>
                     {/* <img src={cloudyPicture} alt="cloudy picture" className='weatherPic' /> */}
-                    <div  className='picture-content'>
-                        <Text variant={'span'} style={{color:'#fdfdfd',fontSize:'35px',paddingTop: '170px',paddingRight:'190px',fontFamily: "'Courier New', Courier, monospace"}}> {weather?.temperature}°</Text>
-                         <Text variant={'span'} style={{color:'#000',fontSize:'13px',paddingTop: '170px',fontFamily: "'Courier New', Courier, monospace"}}> {weather?.description}</Text>
-                        
+                    <div className='picture-content'>
+                        <Text variant={'span'} style={{ color: '#fdfdfd', fontSize: '35px', paddingTop: '170px', paddingRight: '190px', fontFamily: "'Courier New', Courier, monospace" }}> {weather?.temperature}°</Text>
+                        <Text variant={'span'} style={{ color: '#fdfdfd', fontSize: '15px', paddingTop: '170px', paddingLeft: '20px', fontFamily: "'Courier New', Courier, monospace" }}> {weather?.description}</Text>
+
                     </div>
                 </div>
 
                 <div className='card-content'>
                     <div className='weatherItems'>
 
-                         <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Wind</Text>
+                        <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Wind</Text>
                         <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.windSpeed}km/hr</Text>
                     </div>
                     <div className='weatherItems'>
-                         <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Humidity </Text>
+                        <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Humidity </Text>
                         <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.humidity}%</Text>
 
                     </div>
                     <div className='weatherItems'>
-                         <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Visibility </Text>
+                        <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Visibility </Text>
                         <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.visibility}km</Text>
                     </div>
                 </div>
@@ -105,13 +105,45 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
             <div className='weatherDisplay'>
 
-                <Text variant={'span'}> Current Location</Text>
-                <Text variant={'h3'}> Weather Forecast</Text>
-                <Text variant={'h1'}> Overcast cloudy </Text>
-                <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
-                <Text variant={'h1'}> Overcast cloudy </Text>
-                <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
+                <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}> Hourly forecast </Text>
 
+                <div className='hourlyData'>
+
+
+                    <Text variant={'h3'}> Weather Forecast</Text>
+                    <Text variant={'h1'}> Overcast cloudy </Text>
+                    <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
+                    <Text variant={'h1'}> Overcast cloudy </Text>
+                    <Text variant={'h3'}> Overcast sky with muted grey - calm ,soft ,quiet</Text>
+                </div>
+                <div className='card-content'>
+
+                     <div className='weatherItems'>
+
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Wind</Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.windSpeed}km/hr</Text>
+                </div>
+                <div className='weatherItems'>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Humidity </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.humidity}%</Text>
+
+                </div>
+                <div className='weatherItems'>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Visibility </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.visibility}km</Text>
+                </div>
+                  <div className='weatherItems'>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Visibility </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.visibility}km</Text>
+                </div>
+                  <div className='weatherItems'>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}> Visibility </Text>
+                    <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>{weather?.visibility}km</Text>
+                </div>
+
+                </div>
+
+               
 
             </div>
 
