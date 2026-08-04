@@ -6,6 +6,7 @@ import { Header } from './Components/Header/Header';
 import { MainWeatherCard } from './Components/MainWeatherCard/MainWeatherCard';
 import { SearchBar } from './Components/SearchBar/SearchBar';
 import { ThemeToggle } from './Components/ThemeToggle/ThemeToggle';
+import { DailyForecastItem } from './Components/ForecastPanel/DailyForecastItem';
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
                   
                           <SearchBar value={search} onChange={setSearch} onSearch={setCity} /> 
                           <div id='DaysCard'>
-                                    <Text variant={'h1'} style={{color:'black'}}> Boipelo </Text>
+                                       <DailyForecastItem />
                           </div>
                           
                           <div className='weather-cards-container'>

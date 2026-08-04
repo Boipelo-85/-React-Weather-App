@@ -51,5 +51,68 @@
     background-color: #fdfdfd;
     padding: 10px;
     /* color: black; */
+    width: 110%;
+    margin-right: 10px;
 
+}
+
+.forecast-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 20px;
+  align-items: center;
+}
+
+.forecast-pill {
+  min-width: 110px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+}
+
+.forecast-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.forecast-pill-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.forecast-pill-content span:first-child {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.forecast-pill--today {
+  background: linear-gradient(135deg, #ff8b5e 0%, #ff6f4d 100%);
+  box-shadow: 0 4px 16px rgba(255, 107, 77, 0.4);
+}
+
+.forecast-pill--standard {
+  background: #2d3748;
+}
+
+.forecast-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  opacity: 0.9;
+  
 }

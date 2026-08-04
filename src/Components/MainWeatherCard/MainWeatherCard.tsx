@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { Text } from '../Text/Text';
+import { DailyForecastItem } from '../ForecastPanel/DailyForecastItem';
 
 import clear_icon from '../../assets/cloud.jpg'
 import sunny_icon from '../../assets/sunny_icon.jpg'
 import cloudyy from '../../assets/cloud.jpg'
 import rainy_icon from '../../assets/rainy_cloud.jpg'
 import sunny_cloud from '../../assets/sunny_cloud.jpg'
-import {WindIcon} from 'lucide-react'
+import { WindIcon } from 'lucide-react'
 import { WiHumidity } from "react-icons/wi";
-import {  FaEye } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 
 import { CartesianGrid, XAxis, YAxis, Tooltip, LineChart, Line, Legend, ResponsiveContainer } from "recharts";
 
@@ -24,7 +25,7 @@ interface WeatherData {
     temperature: number,
     description: string,
     hour: string,
-    icon: string, 
+    icon: string,
     weather: { icon: string }[];
 
 
@@ -38,35 +39,12 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
 
 
-    // const forecastData = [
-    //     { day: 'Thursday', date: 'Dec 12', weather: 'Partly Cloudy', temperature: 29, icon: '⛅' },
-    //     { day: 'Friday', date: 'Dec 13', weather: 'Mostly Cloudy', temperature: 26, icon: '☁️' },
-    //     { day: 'Saturday', date: 'Dec 14', weather: 'Light Rain', temperature: 23, icon: '🌧️' },
-    //     { day: 'Sunday', date: 'Dec 15', weather: 'Partly Sunny', temperature: 27, icon: '⛅' },
-    //     { day: 'Monday', date: 'Dec 16', weather: 'Partly Cloudy', temperature: 26, icon: '⛅' },
 
-    // ]
 
     const [weather, setWeather] = useState<WeatherData[] | null>(null);
+    const [dailyForecast, setDailyForecast] = useState<any[]>([]);
 
-    // const iconMap: Record<string, string> = {
-    //     "01d":
-    //     "01n": 
-    //     "02d": cloudyy,
-    //     "02n": cloudyy,
-    //     "03d": cloudyy,
-    //     "03n": cloudyy,
-    //     "04d": rainy_icon,
-    //     "04n": rainy_icon,
-    //     "09d": rainy_icon,
-    //     "09n": rainy_icon,
-    //     "10d": 
-    //     "10n": 
-    //     //   "13d": snowy_icon,
-    //     //   "13n": snowy_icon,
-    //     //   "50d": mist_icon,
-    //     //   "50n": mist_icon,
-    // };
+
     const weatherInfo = useCallback(async (city: string) => {
 
         // setLoading();
@@ -90,8 +68,46 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             const currentWind = geoResponse.data.wind.speed;
             const currentHumidity = geoResponse.data.main.humidity
             // const currentIconCode = geoResponse.data.weather[0].icon;
-            
-            
+
+            //Five days weather retrieves
+            const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
+            const forecastResponse = await axios.get(forecastUrl);
+
+            console.log(forecastResponse.data);
+            console.log(forecastResponse.data.list);
+
+
+
+            const grouped: Record<string, any[]> = {};
+            forecastResponse.data.list.forEach((item: any) => {
+                const date = item.dt_txt.split(" ")[0]; // "2026-08-04"
+                if (!grouped[date]) grouped[date] = [];
+                grouped[date].push(item);
+            });
+
+            // Now reduce each date group into one summary
+            const daily = Object.keys(grouped).map(date => {
+                const entries = grouped[date];
+                const temps = entries.map(e => e.main.temp);
+                const minTemp = Math.min(...temps);
+                const maxTemp = Math.max(...temps);
+
+                return {
+                    day: new Date(date).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        day: "numeric"
+                    }),
+                    weather: entries[0].weather[0].temp, // pick first description
+                    icon: entries[0].weather[0].icon,           // pick first icon
+                    min: minTemp,
+                    max: maxTemp
+                };
+            });
+
+
+
+            console.log(dailyForecast);
+
 
             const response = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m`)
             const data = response.data;
@@ -100,7 +116,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             // const tempCelsius = geoResponse.data.main.temp;
             console.log(currentWeather?.icon);
             console.log(`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`);
-     
+
 
             const currentHour = new Date().getHours();
             const formattedData: WeatherData[] = data.hourly.time
@@ -121,6 +137,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     weather: geoResponse.data.weather
 
                 }));
+
+
             if (formattedData.length > 0) {
                 formattedData[0].temperature = currentTemp;
                 formattedData[0].humidity = currentHumidity,
@@ -128,6 +146,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     formattedData[0].description = currentDescription
             }
             setWeather(formattedData)
+            setDailyForecast(daily);
 
         } catch (error) {
 
@@ -147,6 +166,20 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
     return (
         <>
+
+            <div>
+                {dailyForecast.slice(0, 7).map((item, index) => (
+                    <div key={index} className="forecast-card">
+                        <Text variant="h3">{item.day}</Text>
+                        <img
+                            src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
+                            alt={item.weather}
+                        />
+                        <Text variant="span">{item.weather}° </Text>
+                    </div>
+                ))}
+            </div>
+
             <div className='main-weather-row'>
                 <div className='main-weather-card'>
                     <div className='card-image-container'>
@@ -169,14 +202,14 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     <div className='card-content'>
                         <div className='weatherItems'>
                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px' }}>Wind</Text>
-                            <Text variant={'h3'} ><WindIcon/></Text>
+                            <Text variant={'h3'} ><WindIcon /></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
                                 {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
                             </Text>
                         </div>
                         <div className='weatherItems'>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Humidity</Text>
-                            <Text variant={'h3'} ><WiHumidity/></Text>
+                            <Text variant={'h3'} ><WiHumidity /></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
                                 {currentWeather?.humidity ? `${currentWeather.humidity}%` : '--%'}
                             </Text>
@@ -184,7 +217,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
                         <div className='weatherItems'>
                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px' }}>Visibility</Text>
-                            <Text variant={'h3'} ><FaEye/></Text>
+                            <Text variant={'h3'} ><FaEye /></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
                                 {currentWeather?.visibility ? `${currentWeather.visibility}km` : '10km'}
                             </Text>
@@ -196,6 +229,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
                         HourlyForecast
                     </Text>
+
                     <div className='hourlyData'>
                         {weather && (
                             <ResponsiveContainer width="90%" height={350}>
