@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { Text } from '../Text/Text';
 
 
 
-export const ForecastTabs = () =>  {
+export const DailyForecastItem = () =>  {
 
   const forecastData = [
 
@@ -15,7 +16,9 @@ export const ForecastTabs = () =>  {
   return (
     
       <>
-          
+          <div>
+              <Text variant={'h3'}> Forecast days </Text>
+          </div>
       </>
       
   )

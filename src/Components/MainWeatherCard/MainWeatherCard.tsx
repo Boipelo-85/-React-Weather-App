@@ -1,16 +1,18 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { Text } from '../Text/Text';
-// import { DailyForecastItem } from './DailyForecastItem';
+
 import clear_icon from '../../assets/cloud.jpg'
 import sunny_icon from '../../assets/sunny_icon.jpg'
-import  cloudyy from '../../assets/cloud.jpg'
+import cloudyy from '../../assets/cloud.jpg'
 import rainy_icon from '../../assets/rainy_cloud.jpg'
 import sunny_cloud from '../../assets/sunny_cloud.jpg'
+
 import { CartesianGrid, XAxis, YAxis, Tooltip, LineChart, Line, Legend, ResponsiveContainer } from "recharts";
 
 import axios from "axios";
-import moment from "moment";
+import { data } from 'react-router-dom';
+
 interface WeatherData {
 
     wind_speed: number,
@@ -19,7 +21,8 @@ interface WeatherData {
     temperature: number,
     description: string,
     hour: string,
-
+    icon: string, 
+    weather: { icon: string }[];
 
 
 }
@@ -42,69 +45,90 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
     // ]
 
     const [weather, setWeather] = useState<WeatherData[] | null>(null);
-    const allIcons = {
 
-            "01d" : clear_icon,
-             "01n" : clear_icon,
-              "02d" : cloudyy,
-               "02n" : cloudyy,
-                "03d" : cloudyy,
-                 "03n" : cloudyy,
-               "04d" : rainy_icon,
-                "04n" : rainy_icon,
-               "09d" : rainy_icon,
-                "09n" : rainy_icon,
-                  "010d" : clear_icon,
-                "10n" : cloudyy,
-                  "13d" : clear_icon,
-                "13n" : cloudyy,
-              
-
-    }
+    // const iconMap: Record<string, string> = {
+    //     "01d":
+    //     "01n": 
+    //     "02d": cloudyy,
+    //     "02n": cloudyy,
+    //     "03d": cloudyy,
+    //     "03n": cloudyy,
+    //     "04d": rainy_icon,
+    //     "04n": rainy_icon,
+    //     "09d": rainy_icon,
+    //     "09n": rainy_icon,
+    //     "10d": 
+    //     "10n": 
+    //     //   "13d": snowy_icon,
+    //     //   "13n": snowy_icon,
+    //     //   "50d": mist_icon,
+    //     //   "50n": mist_icon,
+    // };
     const weatherInfo = useCallback(async (city: string) => {
-        
-// setLoading();
+
+        // setLoading();
 
         try {
 
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
-          
+
             console.log(url);
-            
+
 
             // const response = await fetch(url)
             // const data = await response.json();
             // console.log(data);
             // const icon = allIcons[data.weather[0].icon] || clear_icon;
-              const geoResponse = await axios.get(url);
-              const { lat, lon } = geoResponse.data.coord;
-              const weatherDescription = geoResponse.data.weather[0].description;
 
-            const response = await axios.get( `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m`)
-              const data = response.data;
+            const geoResponse = await axios.get(url);
+            const { lat, lon } = geoResponse.data.coord;
+            const currentDescription = geoResponse.data.weather[0].description;
+            const currentTemp = Math.floor(geoResponse.data.main.temp);
+            const currentWind = geoResponse.data.wind.speed;
+            const currentHumidity = geoResponse.data.main.humidity
+            // const currentIconCode = geoResponse.data.weather[0].icon;
+            
+            
+
+            const response = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m`)
+            const data = response.data;
 
             const maxHours = 24;
-             const currentHour = new Date().getHours();
+            // const tempCelsius = geoResponse.data.main.temp;
+            console.log(currentWeather?.icon);
+            console.log(`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`);
+     
+
+            const currentHour = new Date().getHours();
             const formattedData: WeatherData[] = data.hourly.time
-                    .slice(currentHour, currentHour + maxHours)
-                     .map((time: string, index: number) => ({
-                     hour: new Date(time).toLocaleTimeString([], {
-                     hour: "2-digit",
-                     minute: "2-digit",
-                
-          }),
-             wind_speed: data.hourly.wind_speed_10m[index],
-                humidity: data.hourly.relative_humidity_2m[index],
-                temperature: Math.floor(data.hourly.temperature_2m[index]),
-                description: weatherDescription,
-                visibility: 10,
-                
-        }))
+                .slice(currentHour, currentHour + maxHours)
+                .map((time: string, index: number) => ({
+                    hour: new Date(time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+
+                    }),
+                    wind_speed: data.hourly.wind_speed_10m[index],
+                    humidity: data.hourly.relative_humidity_2m[index],
+                    temperature: Math.floor(data.hourly.temperature_2m[index]),
+                    description: currentDescription,
+                    visibility: geoResponse.data.visibilty / 1000,
+                    icon: geoResponse.data.weather[0].icon,
+                    // icon: iconMap[currentIconCode] || 'default_icon',
+                    weather: geoResponse.data.weather
+
+                }));
+            if (formattedData.length > 0) {
+                formattedData[0].temperature = currentTemp;
+                formattedData[0].humidity = currentHumidity,
+                    formattedData[0].wind_speed = currentWind,
+                    formattedData[0].description = currentDescription
+            }
             setWeather(formattedData)
 
-        }catch (error) {
+        } catch (error) {
 
-                console.error('Failed to fetch ', error)
+            console.error('Failed to fetch ', error)
         }
     }, [])
 
@@ -116,7 +140,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
         }
     }, [city, weatherInfo])
 
-     const currentWeather = weather && weather.length > 0 ? weather[0] : null;
+    const currentWeather = weather && weather.length > 0 ? weather[0] : null;
 
     return (
         <>
@@ -124,10 +148,16 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                 <div className='main-weather-card'>
                     <div className='card-image-container'>
                         <div className='picture-content'>
-                            <Text variant={'span'} style={{ color: '#fdfdfd', fontSize: '35px', paddingTop: '170px', paddingRight: '190px', fontFamily: "'Courier New', Courier, monospace" }}>
+                            {/* <img src={currentWeather?.icon} alt={currentWeather?.description} /> */}
+                            <img
+                                style={{ paddingTop: '5px' }}
+                                src={`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`}
+                                alt="Weather icon"
+                            />
+                            <Text variant={'span'} style={{ color: '#fdfdfd', fontSize: '40px', paddingTop: '180px', paddingRight: '190px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
                                 {currentWeather?.temperature ? `${currentWeather.temperature}°C` : '--°C'}
                             </Text>
-                            <Text variant={'span'} style={{ color: '#fdfdfd', fontSize: '15px', paddingTop: '170px', paddingLeft: '20px', fontFamily: "'Courier New', Courier, monospace" }}>
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '25px', paddingLeft: '25px', paddingTop: '0px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.description || 'Loading...'}
                             </Text>
                         </div>
@@ -146,6 +176,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                 {currentWeather?.humidity ? `${currentWeather.humidity}%` : '--%'}
                             </Text>
                         </div>
+
                         <div className='weatherItems'>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Visibility</Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
@@ -156,41 +187,42 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                 </div>
 
                 <div className='weatherDisplay'>
-                <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
-                    Hourly forecast
-                </Text>
+                    <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
+                        HourlyForecast
+                    </Text>
 
-                <div className='hourlyData'>
-                     {weather && (
-                    <ResponsiveContainer width="100%" height={400}>
-                        <LineChart data={weather}>
-                            <XAxis dataKey="hour" stroke="#fff" />
-                            <YAxis stroke="#fff" />
-                            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                            <Tooltip />
-                            <Legend />
-                            <Line type="monotone" dataKey="wind_speed" stroke="#8884d8" name="Wind Speed" />
-                            <Line type="monotone" dataKey="temperature" stroke="#82ca9d" name="Temperature" />
-                            <Line type="monotone" dataKey="humidity" stroke="#dc34ac" name="Humidity" />
-                        </LineChart>
-                    </ResponsiveContainer>
-                )}
-                </div>
+                    <div className='hourlyData'>
+                        {weather && (
+                            <ResponsiveContainer width="100%" height={350}>
+                                <LineChart data={weather}>
+                                    <XAxis dataKey="hour" stroke="#fff" />
+                                    <YAxis stroke="#fff" />
+                                    <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Line type="monotone" dataKey="wind_speed" stroke="#8884d8" name="Wind Speed" />
+                                    <Line type="monotone" dataKey="temperature" stroke="#82ca9d" name="Temperature" />
+                                    <Line type="monotone" dataKey="humidity" stroke="#dc34ac" name="Humidity" />
+                                </LineChart>
+                            </ResponsiveContainer>
 
-                <div className='card-content'>
-                    {weather && weather.slice(0, 6).map((item, index) => (
-                        <div className='weatherItems' key={index}>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
-                                {item.hour}
-                            </Text>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
-                                {item.temperature}°C
-                            </Text>
-                        </div>
-                    ))}
+                        )}
+                    </div>
+
+                    <div className='card-content'>
+                        {weather && weather.slice(0, 8).map((item, index) => (
+                            <div className='weatherItems' key={index}>
+                                <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
+                                    {item.hour}
+                                </Text>
+                                <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
+                                    {item.temperature}°
+                                </Text>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
-        </div>
         </>
     )
 }
