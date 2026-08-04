@@ -255,7 +255,7 @@ code {
 
 .main-weather-row {
   display: grid;
-  grid-template-columns: minmax(320px, 415px) minmax(580px, 1.3fr);
+  grid-template-columns: minmax(360px, 415px) minmax(550px, 1.3fr);
   width: 100%;
   gap: -5px;
 
@@ -271,7 +271,7 @@ code {
   padding: 10px;
   padding-left: 10px;
   box-shadow: 0 8px 32px rgb(0, 0, 0, 0.3);
-  max-width: 360px;
+  max-width: 370px;
   width: 100%;
   color: white;
   margin-left: -95px;
@@ -301,11 +301,16 @@ code {
 .weatherItems {
 
   background-color: #e2d6d6;
-  padding: 0 20px;
+  padding: 0 25px;
   border-radius: 10px;
  
 }
+.weatherItemsHourly{
 
+    background-color: #e2d6d6;
+  padding: 0 20px;
+  border-radius: 10px;
+}
 .card-image-container {
 
   width: 100%;
@@ -348,21 +353,19 @@ code {
 
   background-color: #fdfdfd;
   border-radius: 20px;
-  padding: 10px;
+  padding: 15px;
   width: 500px;
   
-  padding-right: 40px;
-  margin-right: 30px;
+  padding-right: 10px;
   width: 100%;
-
-
 }
+
 .hourlyData{
 
    
     border-radius: 20px;
     border: 1px solid black;
-    width: 105%;
+    width: 100%;
 
 
 }

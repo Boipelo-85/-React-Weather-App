@@ -7,6 +7,9 @@ import sunny_icon from '../../assets/sunny_icon.jpg'
 import cloudyy from '../../assets/cloud.jpg'
 import rainy_icon from '../../assets/rainy_cloud.jpg'
 import sunny_cloud from '../../assets/sunny_cloud.jpg'
+import {WindIcon} from 'lucide-react'
+import { WiHumidity } from "react-icons/wi";
+import {  FaEye } from "react-icons/fa";
 
 import { CartesianGrid, XAxis, YAxis, Tooltip, LineChart, Line, Legend, ResponsiveContainer } from "recharts";
 
@@ -165,20 +168,23 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
                     <div className='card-content'>
                         <div className='weatherItems'>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Wind</Text>
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px' }}>Wind</Text>
+                            <Text variant={'h3'} ><WindIcon/></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
                                 {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
                             </Text>
                         </div>
                         <div className='weatherItems'>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Humidity</Text>
+                            <Text variant={'h3'} ><WiHumidity/></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
                                 {currentWeather?.humidity ? `${currentWeather.humidity}%` : '--%'}
                             </Text>
                         </div>
 
                         <div className='weatherItems'>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>Visibility</Text>
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px' }}>Visibility</Text>
+                            <Text variant={'h3'} ><FaEye/></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
                                 {currentWeather?.visibility ? `${currentWeather.visibility}km` : '10km'}
                             </Text>
@@ -190,10 +196,9 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
                         HourlyForecast
                     </Text>
-
                     <div className='hourlyData'>
                         {weather && (
-                            <ResponsiveContainer width="100%" height={350}>
+                            <ResponsiveContainer width="90%" height={350}>
                                 <LineChart data={weather}>
                                     <XAxis dataKey="hour" stroke="#fff" />
                                     <YAxis stroke="#fff" />
@@ -210,8 +215,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </div>
 
                     <div className='card-content'>
-                        {weather && weather.slice(0, 8).map((item, index) => (
-                            <div className='weatherItems' key={index}>
+                        {weather && weather.slice(0, 7).map((item, index) => (
+                            <div className='weatherItemsHourly' key={index}>
                                 <Text variant={'h3'} style={{ color: '#000', fontSize: '10px' }}>
                                     {item.hour}
                                 </Text>
