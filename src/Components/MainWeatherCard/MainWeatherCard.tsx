@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { Text } from '../Text/Text';
-import { DailyForecastItem } from '../ForecastPanel/DailyForecastItem';
+// import { DailyForecastItem } from '../ForecastPanel/DailyForecastItem';
 
-import clear_icon from '../../assets/cloud.jpg'
-import sunny_icon from '../../assets/sunny_icon.jpg'
-import cloudyy from '../../assets/cloud.jpg'
-import rainy_icon from '../../assets/rainy_cloud.jpg'
-import sunny_cloud from '../../assets/sunny_cloud.jpg'
+// import clear_icon from '../../assets/cloud.jpg'
+// import sunny_icon from '../../assets/sunny_icon.jpg'
+// import cloudyy from '../../assets/cloud.jpg'
+// import rainy_icon from '../../assets/rainy_cloud.jpg'
+// import sunny_cloud from '../../assets/sunny_cloud.jpg'
+
 import { WindIcon } from 'lucide-react'
 import { WiHumidity } from "react-icons/wi";
 import { FaEye } from "react-icons/fa";
@@ -86,18 +87,19 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             });
 
             // Now reduce each date group into one summary
+
             const daily = Object.keys(grouped).map(date => {
                 const entries = grouped[date];
                 const temps = entries.map(e => e.main.temp);
-                const minTemp = Math.min(...temps);
-                const maxTemp = Math.max(...temps);
+                const minTemp = Math.floor(Math.min(...temps));
+                const maxTemp = Math.floor(Math.max(...temps));
 
                 return {
                     day: new Date(date).toLocaleDateString("en-US", {
-                        weekday: "short",
-                        day: "numeric"
+                        weekday: "short"
+
                     }),
-                    weather: entries[0].weather[0].temp, // pick first description
+                    weather: entries[0].weather[0].description, // pick first description
                     icon: entries[0].weather[0].icon,           // pick first icon
                     min: minTemp,
                     max: maxTemp
@@ -167,15 +169,19 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
     return (
         <>
 
-            <div>
+            <div className='dailyForecast-row'>
+                
                 {dailyForecast.slice(0, 7).map((item, index) => (
-                    <div key={index} className="forecast-card">
-                        <Text variant="h3">{item.day}</Text>
-                        <img
+
+                    <div key={index} className="forecast-pill-content">
+                        <Text variant={'span'} style={{ fontSize: '15px', fontWeight: 700 }}>{item.day} {item.max}°</Text>
+                        <span>
+                            <img
                             src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
                             alt={item.weather}
-                        />
-                        <Text variant="span">{item.weather}° </Text>
+                            className='forecast-icon'
+                            />
+                        </span>
                     </div>
                 ))}
             </div>
@@ -224,7 +230,6 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                         </div>
                     </div>
                 </div>
-
                 <div className='weatherDisplay'>
                     <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
                         HourlyForecast

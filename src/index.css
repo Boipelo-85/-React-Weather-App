@@ -246,11 +246,12 @@ code {
 /* Main Weather Content Part */
 
 .weather-cards-container {
-  display: flex;
+
   gap: 20px;
   justify-content: center;
   align-items: flex-start;
-  margin-top: 40px;
+  margin-top: 20px;
+  
 }
 
 .main-weather-row {
@@ -358,6 +359,7 @@ code {
   
   padding-right: 10px;
   width: 100%;
+  
 }
 
 .hourlyData{
@@ -456,4 +458,28 @@ code {
 }
 
 /* Daily forecast styilng */
+.dailyForecast-row{
 
+
+  display: flex;
+  margin-bottom: 30px;
+  padding: 5px;
+  margin-left: -85px;
+  width: 110%;
+  opacity: 10px;
+   display: flex;
+  flex-wrap: nowrap;
+gap: 5px;
+
+}
+.forecast-card{
+
+      display: flex;
+  align-items: center;
+  gap: 6px;
+
+}
+.forecast-icon{
+
+
+}

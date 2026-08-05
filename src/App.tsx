@@ -24,16 +24,19 @@ function App() {
                 <div id='sub-container'>
                   
                           <SearchBar value={search} onChange={setSearch} onSearch={setCity} /> 
-                          <div id='DaysCard'>
+                          {/* <div id='DaysCard'>
                                        <DailyForecastItem />
                           </div>
-                          
+                           */}
                           <div className='weather-cards-container'>
                             <MainWeatherCard city={city}/>
                           </div>
                           {/* <div>
+                          
                             <ThemeToggle />
+
                           </div> */}
+
                 </div>              
             </div>
         </div>

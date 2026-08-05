@@ -37,7 +37,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({ forecastDa
             className={`forecast-pill ${isToday ? 'forecast-pill--today' : 'forecast-pill--standard'}`}
           >
             <div className='forecast-pill-content'>
-              <Text variant={'span'} style={{ fontSize: '14px', fontWeight: 700 }}>
+              <Text variant={'span'} style={{ fontSize: '17px', fontWeight: 700 }}>
                 {item.day} {item.temperature}
               </Text>
               <span className='forecast-icon'>{item.icon}</span>
