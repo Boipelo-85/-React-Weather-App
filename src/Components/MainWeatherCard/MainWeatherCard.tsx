@@ -16,7 +16,6 @@ import { FaEye } from "react-icons/fa";
 import { CartesianGrid, XAxis, YAxis, Tooltip, LineChart, Line, Legend, ResponsiveContainer } from "recharts";
 
 import axios from "axios";
-import { data } from 'react-router-dom';
 
 interface WeatherData {
 
@@ -46,7 +45,23 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
     const [weather, setWeather] = useState<WeatherData[] | null>(null);
     const [dailyForecast, setDailyForecast] = useState<any[]>([]);
+    const [unit, setUnit] = useState<'C' | 'F'>('C');
 
+    const convertTemp = (value: number) => unit === 'C' ? Math.round(value) : Math.round(value * 9 / 5 + 32);
+    const formatTemp = (value?: number, fallback = '--') => value != null ? `${convertTemp(value)}°${unit}` : `${fallback}°${unit}`;
+
+    const displayedWeather = weather?.map(item => ({
+        ...item,
+        temperature: convertTemp(item.temperature),
+        minWeather: item.minWeather != null ? convertTemp(item.minWeather) : item.minWeather,
+        maxWeather: item.maxWeather != null ? convertTemp(item.maxWeather) : item.maxWeather,
+    })) || null;
+
+    const displayedDailyForecast = dailyForecast.map(item => ({
+        ...item,
+        min: unit === 'C' ? item.min : Math.round(item.min * 9 / 5 + 32),
+        max: unit === 'C' ? item.max : Math.round(item.max * 9 / 5 + 32),
+    }));
 
     const weatherInfo = useCallback(async (city: string) => {
 
@@ -137,12 +152,12 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     humidity: data.hourly.relative_humidity_2m[index],
                     temperature: Math.floor(data.hourly.temperature_2m[index]),
                     description: currentDescription,
-                    visibility: geoResponse.data.visibilty / 1000,
+                    visibility: geoResponse.data.visibility / 1000,
                     icon: geoResponse.data.weather[0].icon,
                     // icon: iconMap[currentIconCode] || 'default_icon',
                     weather: geoResponse.data.weather,
-                    minWeathether: minWeatherGet,
-                    maxWeathether: maxWeatherGet
+                    minWeather: minWeatherGet,
+                    maxWeather: maxWeatherGet
 
 
                 }));
@@ -172,17 +187,50 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
         }
     }, [city, weatherInfo])
 
-    const currentWeather = weather && weather.length > 0 ? weather[0] : null;
+    const currentWeather = displayedWeather && displayedWeather.length > 0 ? displayedWeather[0] : null;
 
     return (
         <>
 
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginBottom: '12px' }}>
+                <button
+                    type='button'
+                    onClick={() => setUnit('C')}
+                    style={{
+                        padding: '8px 16px',
+                        borderRadius: '999px',
+                        border: unit === 'C' ? '1px solid #fff' : '1px solid #999',
+                        background: unit === 'C' ? '#000' : '#fff',
+                        color: unit === 'C' ? '#fff' : '#000',
+                        cursor: 'pointer'
+                    }}
+                >
+                    °C
+                </button>
+                <button
+                    type='button'
+                    onClick={() => setUnit('F')}
+                    style={{
+                        padding: '8px 16px',
+                        borderRadius: '999px',
+                        border: unit === 'F' ? '1px solid #fff' : '1px solid #999',
+                        background: unit === 'F' ? '#000' : '#fff',
+                        color: unit === 'F' ? '#fff' : '#000',
+                        cursor: 'pointer'
+                    }}
+                >
+                    °F
+                </button>
+            </div>
+
             <div className='dailyForecast-row'>
 
-                {dailyForecast.slice(0, 7).map((item, index) => (
+                {displayedDailyForecast.slice(0, 7).map((item, index) => (
 
                     <div key={index} className="forecast-pill-content">
-                        <Text variant={'span'} style={{ fontSize: '15px', fontWeight: 700, fontFamily: "'Courier New', Courier, monospace" }}>{item.day} {item.max}°</Text>
+                        <Text variant={'span'} style={{ fontSize: '15px', fontWeight: 700, fontFamily: "'Courier New', Courier, monospace" }}>
+                            {item.day} {item.max}°{unit}
+                        </Text>
                         <span>
                             <img
                                 src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
@@ -205,13 +253,13 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                 alt="Weather icon"
                             />
                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '60px', alignItems: 'center', marginTop: '-10px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
-                                {currentWeather?.temperature ? `${currentWeather.temperature}°C` : '--°C'}
+                                {currentWeather?.temperature != null ? `${currentWeather.temperature}°${unit}` : `--°${unit}`}
                             </Text>
                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '25px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.description || 'Loading...'}
                             </Text>
                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '12px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
-                                H:{currentWeather?.minWeather}° | L: {currentWeather?.maxWeather}°
+                                H: {currentWeather?.minWeather != null ? `${currentWeather.minWeather}°${unit}` : `--°${unit}`} | L: {currentWeather?.maxWeather != null ? `${currentWeather.maxWeather}°${unit}` : `--°${unit}`}
                             </Text>
                         </div>
                     </div>
@@ -247,9 +295,9 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </Text>
 
                     <div className='hourlyData'>
-                        {weather && (
+                        {displayedWeather && (
                             <ResponsiveContainer width="90%" height={350}>
-                                <LineChart data={weather}>
+                                <LineChart data={displayedWeather}>
                                     <XAxis dataKey="hour" stroke="#fff" />
                                     <YAxis stroke="#fff" />
                                     <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
@@ -264,13 +312,13 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                         )}
                     </div>
                     <div className='card-content'>
-                        {weather && weather.slice(0, 7).map((item, index) => (
+                        {displayedWeather && displayedWeather.slice(0, 7).map((item, index) => (
                             <div className='weatherItemsHourly' key={index}>
                                 <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                     {item.hour}
                                 </Text>
                                 <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
-                                    {item.temperature}°
+                                    {item.temperature}°{unit}
                                 </Text>
                             </div>
                         ))}

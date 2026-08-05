@@ -23,6 +23,7 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch }) =
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
 
   const weatherSearch = async (city: string) => {
@@ -62,11 +63,66 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch }) =
         <div className='Heading-items'>
 
           <Text variant={'span'} style={{ color: '#fdfdfd', fontWeight: 'bold', fontSize: '30px', paddingRight: '15px', paddingLeft: '5px', fontFamily: "'Courier New', Courier, monospace" }}>Weather forecast</Text>
-          <Text variant={'span'} style={{ paddingRight: '120px'}}><ThemeToggle></ThemeToggle></Text>
+          <Text variant={'span'} style={{ paddingRight: '120px'}}><ThemeToggle /></Text>
+
+         
+
           <Text variant={'span'} style={{ color: '#fdfdfd', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location} </Text>
 
           <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
           <input type="text" ref={inputRef} className='search-bar' placeholder='Search City' value={value} onChange={(e) => onChange(e.target.value)} />
+           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              type='button'
+              onClick={() => setMenuOpen(prev => !prev)}
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '8px',
+                border: '1px solid #fff',
+                background: 'transparent',
+                color: '#fff',
+                cursor: 'pointer',
+                fontSize: '24px',
+                lineHeight: '0.9'
+              }}
+            >
+              ☰
+            </button>
+            {menuOpen && (
+              <div style={{
+                position: 'absolute',
+                top: '48px',
+                right: '0',
+                background: '#000',
+                border: '1px solid #444',
+                borderRadius: '10px',
+                padding: '12px',
+                zIndex: 10,
+                minWidth: '160px'
+              }}>
+                <button
+                  type='button'
+                  onClick={() => {
+                    setMenuOpen(false);
+                    alert('Saved Location clicked');
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #fff',
+                    background: '#111',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  Saved Location
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
     </div>
