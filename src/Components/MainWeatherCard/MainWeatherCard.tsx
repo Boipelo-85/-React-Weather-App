@@ -28,8 +28,8 @@ interface WeatherData {
     hour: string,
     icon: string,
     weather: { icon: string }[],
-    minWeather :number,
-    maxWeather :number,
+    minWeather: number,
+    maxWeather: number,
 
 
 }
@@ -72,8 +72,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             const currentHumidity = geoResponse.data.main.humidity;
             // const currentIconCode = geoResponse.data.weather[0].icon;
 
-            const minWeatherGet =  Math.floor(geoResponse.data.main.temp_min);
-            const maxWeatherGet =  Math.floor(geoResponse.data.main.temp_max);
+            const minWeatherGet = Math.floor(geoResponse.data.main.temp_min);
+            const maxWeatherGet = Math.floor(geoResponse.data.main.temp_max);
 
             //Five days weather retrieves
             const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
@@ -141,12 +141,11 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     icon: geoResponse.data.weather[0].icon,
                     // icon: iconMap[currentIconCode] || 'default_icon',
                     weather: geoResponse.data.weather,
-                    minWeathether : minWeatherGet,
-                    maxWeathether : maxWeatherGet
-                    
+                    minWeathether: minWeatherGet,
+                    maxWeathether: maxWeatherGet
+
 
                 }));
-
 
             if (formattedData.length > 0) {
                 formattedData[0].temperature = currentTemp;
@@ -179,16 +178,16 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
         <>
 
             <div className='dailyForecast-row'>
-                
+
                 {dailyForecast.slice(0, 7).map((item, index) => (
 
                     <div key={index} className="forecast-pill-content">
-                        <Text variant={'span'} style={{ fontSize: '15px', fontWeight: 700,fontFamily: "'Courier New', Courier, monospace" }}>{item.day} {item.max}°</Text>
+                        <Text variant={'span'} style={{ fontSize: '15px', fontWeight: 700, fontFamily: "'Courier New', Courier, monospace" }}>{item.day} {item.max}°</Text>
                         <span>
                             <img
-                            src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
-                            alt={item.weather}
-                            className='forecast-icon'
+                                src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
+                                alt={item.weather}
+                                className='forecast-icon'
                             />
                         </span>
                     </div>
@@ -205,38 +204,38 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                 src={`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`}
                                 alt="Weather icon"
                             />
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '60px',alignItems:'center', marginTop: '-10px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '60px', alignItems: 'center', marginTop: '-10px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
                                 {currentWeather?.temperature ? `${currentWeather.temperature}°C` : '--°C'}
                             </Text>
                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '25px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.description || 'Loading...'}
                             </Text>
-                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '12px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
-                                H:{currentWeather?.minWeather }° | L: {currentWeather?.maxWeather}°
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '12px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                H:{currentWeather?.minWeather}° | L: {currentWeather?.maxWeather}°
                             </Text>
                         </div>
                     </div>
 
                     <div className='card-content'>
                         <div className='weatherItems'>
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px',fontFamily: "'Courier New', Courier, monospace" }}>Wind</Text>
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Wind</Text>
                             <Text variant={'h3'} ><WindIcon /></Text>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px',fontFamily: "'Courier New', Courier, monospace" }}>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
                             </Text>
                         </div>
                         <div className='weatherItems'>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px',fontFamily: "'Courier New', Courier, monospace" }}>Humidity</Text>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Humidity</Text>
                             <Text variant={'h3'} ><WiHumidity /></Text>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px',fontFamily: "'Courier New', Courier, monospace"}}>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.humidity ? `${currentWeather.humidity}%` : '--%'}
                             </Text>
                         </div>
 
                         <div className='weatherItems'>
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px',fontFamily: "'Courier New', Courier, monospace" }}>Visibility</Text>
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Visibility</Text>
                             <Text variant={'h3'} ><FaEye /></Text>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px',fontFamily: "'Courier New', Courier, monospace" }}>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.visibility ? `${currentWeather.visibility}km` : '10km'}
                             </Text>
                         </div>
@@ -264,19 +263,23 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
                         )}
                     </div>
-
                     <div className='card-content'>
                         {weather && weather.slice(0, 7).map((item, index) => (
                             <div className='weatherItemsHourly' key={index}>
                                 <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                     {item.hour}
                                 </Text>
-                                <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace"}}>
+                                <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                     {item.temperature}°
                                 </Text>
                             </div>
                         ))}
                     </div>
+                </div>
+                <div className='last-card'>
+                    <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
+                               HourlyForecast
+                    </Text>
                 </div>
             </div>
         </>
