@@ -1,38 +1,38 @@
-import { useState } from 'react';
 import { Text } from './Components/Text/Text';
 
-interface SavedLocation {
+export type SavedLocationItem = {
   name: string;
-  temperature: number;
-  condition: string;
+  lat?: number;
+  lon?: number;
 }
 
-export const SavedLocation = () => {
-  const [savedLocations, setSavedLocations] = useState<SavedLocation[]>([
-    { name: 'New York', temperature: 22, condition: 'Sunny' },
-    { name: 'London', temperature: 15, condition: 'Cloudy' },
-    { name: 'Tokyo', temperature: 28, condition: 'Partly Cloudy' },
-  ]);
+export type SavedLocationProps = {
+  savedLocations?: SavedLocationItem[];
+  onSelect?: (name: string) => void;
+  onRemove?: (name: string) => void;
+}
 
-  const removeLocation = (index: number) => {
-    setSavedLocations(savedLocations.filter((_, i) => i !== index));
-  };
-
+export const SavedLocation: React.FC<SavedLocationProps> = ({ savedLocations = [], onSelect, onRemove }) => {
   return (
-    <div className='saved-locations'>
-      <Text variant={'h3'} style={{marginBottom: '16px'}}>Saved Locations</Text>
+    <div className='saved-locations' style={{background: '#0f1720', borderRadius: 12, padding: 12, color: '#fff', minWidth: 220}}>
+      <Text variant={'h3'} style={{marginBottom: '12px'}}>Saved Locations</Text>
       <div className='locations-list'>
+        {savedLocations.length === 0 && (
+          <Text variant={'span'} style={{opacity: 0.8}}>No saved locations</Text>
+        )}
         {savedLocations.map((location, index) => (
-          <div key={index} className='location-item'>
-            <div className='location-info'>
-              <Text variant={'span'} style={{fontWeight: 600}}>{location.name}</Text>
-              <Text variant={'span'} style={{opacity: 0.8}}>{location.condition}</Text>
+          <div key={index} className='location-item' style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 4px', borderRadius: 8}}>
+            <div className='location-info' style={{cursor: 'pointer'}} onClick={() => onSelect && onSelect(location.name)}>
+              <Text variant={'span'} style={{fontWeight: 700}}>{location.name}</Text>
+              {location.lat != null && (
+                <Text variant={'span'} style={{opacity: 0.7, display: 'block', fontSize: 12}}>{location.lat.toFixed(2)}, {location.lon?.toFixed(2)}</Text>
+              )}
             </div>
-            <div className='location-temp'>
-              <Text variant={'span'} style={{fontWeight: 600}}>{location.temperature}°</Text>
+            <div className='location-actions'>
               <button 
                 className='remove-btn'
-                onClick={() => removeLocation(index)}
+                onClick={() => onRemove && onRemove(location.name)}
+                style={{background: 'transparent', border: 'none', color: '#fff', fontSize: 18, cursor: 'pointer'}}
               >
                 ×
               </button>

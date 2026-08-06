@@ -319,6 +319,129 @@ code {
 
 }
 
+/* Responsive adjustments for SearchBar and nav */
+@media (max-width: 1200px) {
+  .nav {
+    padding: 20px 24px;
+    gap: 32px;
+  }
+
+  .Heading-items {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .search-logo {
+    left: 180px;
+  }
+
+  .search-bar {
+    width: 260px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav {
+    padding: 18px 20px;
+    gap: 20px;
+  }
+
+  .Heading-items {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .search-logo {
+    left: 140px;
+  }
+
+  .search-bar {
+    width: 220px;
+    margin-top: 12px;
+  }
+
+  .humbuger-button {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 16px 18px;
+    gap: 16px;
+  }
+
+  .Heading-items {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .search-logo {
+    left: 0;
+    margin-top: 8px;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: 320px;
+    padding: 10px 16px;
+  }
+
+  .OuterButtonBugger {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .Heading-items {
+    gap: 12px;
+  }
+
+  .search-logo {
+    width: 18px;
+    height: 26px;
+    left: 0;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .OuterButtonBugger {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 320px) {
+  .nav {
+    padding: 12px 12px;
+    gap: 10px;
+  }
+
+  .Heading-items {
+    gap: 10px;
+  }
+
+  .search-bar {
+    padding: 10px 12px;
+  }
+
+  .OuterButtonBugger {
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
+  }
+}
+
 .main-weather-row {
   display: grid;
   grid-template-columns: minmax(360px, 415px) minmax(550px, 1.3fr);

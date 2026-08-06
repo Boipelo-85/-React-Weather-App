@@ -13,6 +13,8 @@ interface DailyForecastItemProps {
 
 
 export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({ forecastData = [] }) => {
+
+
   const defaultForecastData: ForecastItemData[] = [
     { day: 'Today', temperature: 22, icon: '☁️' },
     { day: 'Thu', temperature: 18, icon: '☀️' },
@@ -31,7 +33,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({ forecastDa
       {items.map((item, index) => {
         const isToday = item.day === 'Today';
 
-        return (
+        return ( 
           <div
             key={`${item.day}-${index}`}
             className={`forecast-pill ${isToday ? 'forecast-pill--today' : 'forecast-pill--standard'}`}
