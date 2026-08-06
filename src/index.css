@@ -566,14 +566,14 @@ code {
   align-items: center;
   gap: 200px;
   margin-left : -90px;
-  border-radius: 10px;
+  border-radius: 10px; 
   
+
 }
 .additionCardInfo{
 
       padding: 10px;
       border: 1px solid black;
-      padding-right: 5px;
-      
+      padding-right: 5px; 
       
 }
