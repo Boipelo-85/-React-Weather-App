@@ -1,9 +1,10 @@
 #app-container {
 
-  position: relative;
+  position: absolute;
   min-height: calc(100vh - 100px);
   width: 100%;
-  padding: 0 16px 150px;
+  padding: 0 10px 140px;
+  
   left: 0;
   background: transparent;
   padding-top: 20px;

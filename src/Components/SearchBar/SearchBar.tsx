@@ -71,54 +71,29 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch }) =
 
           <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
           <input type="text" ref={inputRef} className='search-bar' placeholder='Search City' value={value} onChange={(e) => onChange(e.target.value)} />
-           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
+
+           <div className='humbuger-button'>
             <button
               type='button'
               onClick={() => setMenuOpen(prev => !prev)}
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '8px',
-                border: '1px solid #fff',
-                background: 'transparent',
-                color: '#fff',
-                cursor: 'pointer',
-                fontSize: '24px',
-                lineHeight: '0.9'
-              }}
+              className='OuterButtonBugger'
             >
               ☰
             </button>
             {menuOpen && (
-              <div style={{
-                position: 'absolute',
-                top: '48px',
-                right: '0',
-                background: '#000',
-                border: '1px solid #444',
-                borderRadius: '10px',
-                padding: '12px',
-                zIndex: 10,
-                minWidth: '160px'
-              }}>
+              <div 
+                className='openButton'
+              >
                 <button
                   type='button'
                   onClick={() => {
                     setMenuOpen(false);
-                    alert('Saved Location clicked');
+                    window.alert('Saved Location clicked');
                   }}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid #fff',
-                    background: '#111',
-                    color: '#fff',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
+                  className='savedLocationButton'
                 >
                   Saved Location
+                  
                 </button>
               </div>
             )}

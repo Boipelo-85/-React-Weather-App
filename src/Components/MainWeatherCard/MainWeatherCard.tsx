@@ -192,7 +192,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
     return (
         <>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginBottom: '12px' }}>
+            <div className='switchButtons'>
                 <button
                     type='button'
                     onClick={() => setUnit('C')}
@@ -259,30 +259,30 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                 {currentWeather?.description || 'Loading...'}
                             </Text>
                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '12px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
-                                H: {currentWeather?.minWeather != null ? `${currentWeather.minWeather}°${unit}` : `--°${unit}`} | L: {currentWeather?.maxWeather != null ? `${currentWeather.maxWeather}°${unit}` : `--°${unit}`}
+                                H: {currentWeather?.maxWeather != null ? `${currentWeather.maxWeather}°${unit}` : `--°${unit}`} | L: {currentWeather?.minWeather != null ? `${currentWeather.minWeather}°${unit}` : `--°${unit}`}
                             </Text>
                         </div>
                     </div>
 
                     <div className='card-content'>
                         <div className='weatherItems'>
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Wind</Text>
-                            <Text variant={'h3'} ><WindIcon /></Text>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Wind</Text>
+                            <Text variant={'h3'} ><WindIcon style={{ color: '#000' }} /></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
                             </Text>
                         </div>
                         <div className='weatherItems'>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Humidity</Text>
-                            <Text variant={'h3'} ><WiHumidity /></Text>
+                            <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.humidity ? `${currentWeather.humidity}%` : '--%'}
                             </Text>
                         </div>
 
                         <div className='weatherItems'>
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Visibility</Text>
-                            <Text variant={'h3'} ><FaEye /></Text>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Visibility</Text>
+                            <Text variant={'h3'} ><FaEye style={{ color: '#000' }} /></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.visibility ? `${currentWeather.visibility}km` : '10km'}
                             </Text>
@@ -325,9 +325,28 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </div>
                 </div>
                 <div className='last-card'>
-                    <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
-                               HourlyForecast
-                    </Text>
+                    <div className='additionCardInfo'>
+
+                        <Text variant={'h3'} style={{ color: '#000', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
+                            FeelsLike
+                        </Text>
+
+                    </div>
+                      <div className='additionCardInfo'>
+
+                        <Text variant={'h3'} style={{ color: '#000',  fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
+                            Pressure
+                        </Text>
+
+                    </div>
+                      <div className='additionCardInfo'>
+
+                        <Text variant={'h3'} style={{ color: '#000',  fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
+                            Mainwwwww
+                        </Text>
+
+                    </div>
+
                 </div>
             </div>
         </>
