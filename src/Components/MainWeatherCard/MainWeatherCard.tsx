@@ -3,12 +3,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { Text } from '../Text/Text';
 // import { DailyForecastItem } from '../ForecastPanel/DailyForecastItem';
 
-// import clear_icon from '../../assets/cloud.jpg'
-// import sunny_icon from '../../assets/sunny_icon.jpg'
-// import cloudyy from '../../assets/cloud.jpg'
-// import rainy_icon from '../../assets/rainy_cloud.jpg'
-// import sunny_cloud from '../../assets/sunny_cloud.jpg'
-
 import { WindIcon } from 'lucide-react'
 import { WiHumidity } from "react-icons/wi";
 import { FaEye } from "react-icons/fa";
@@ -48,7 +42,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
     const [unit, setUnit] = useState<'C' | 'F'>('C');
 
     const convertTemp = (value: number) => unit === 'C' ? Math.round(value) : Math.round(value * 9 / 5 + 32);
-    const formatTemp = (value?: number, fallback = '--') => value != null ? `${convertTemp(value)}°${unit}` : `${fallback}°${unit}`;
+    // const formatTemp = (value?: number, fallback = '--') => value != null ? `${convertTemp(value)}°${unit}` : `${fallback}°${unit}`;
 
     const displayedWeather = weather?.map(item => ({
         ...item,

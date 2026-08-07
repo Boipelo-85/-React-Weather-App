@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import './App.css'
-import { Text } from './Components/Text/Text';
-import { Header } from './Components/Header/Header';
+// import { Text } from './Components/Text/Text';
+// import { Header } from './Components/Header/Header';
 import { MainWeatherCard } from './Components/MainWeatherCard/MainWeatherCard';
 import { SearchBar } from './Components/SearchBar/SearchBar';
-// import { ThemeToggle } from './Components/ThemeToggle/ThemeToggle';
-// import { DailyForecastItem } from './Components/ForecastPanel/DailyForecastItem';
+
 import { SaveConfirmModal } from './Components/SavedLocations/SaveConfirmModal';
 
 
