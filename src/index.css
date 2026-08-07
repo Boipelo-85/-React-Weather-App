@@ -80,9 +80,9 @@ body.dark-mode #main-content {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-body.dark-mode #sub-container {
+/* body.dark-mode #sub-container {
   background: rgba(30, 31, 40, 0.6);
-}
+} */
 
 body.dark-mode .main-weather-card {
   background-color: #1f2028;
@@ -92,7 +92,7 @@ body.dark-mode .main-weather-card {
 
 body.dark-mode .weatherItems {
   background-color: #f3f4f6;
-  
+
 }
 
 body.dark-mode .weatherDisplay {
@@ -120,7 +120,7 @@ body.dark-mode .nav {
 body {
   margin: 0;
   background: transparent;
- 
+
 }
 
 h1,
@@ -266,7 +266,7 @@ code {
 
 }
 
-.savedLocationButton{
+.savedLocationButton {
 
   width: 100%;
   padding: 10px 40px;
@@ -681,22 +681,79 @@ code {
   background-color: #fdfdfd;
   height: 100%;
   margin-top: 50px;
-  padding: 15px;
-  display: flex;
+
+
   margin-left: -90px;
   width: 160%;
   padding-right: 430px;
   align-items: center;
   gap: 200px;
-  margin-left : -90px;
-  border-radius: 10px; 
-  
+  margin-left: -90px;
+  border-radius: 10px;
 
 }
-.additionCardInfo{
 
-      padding: 10px;
-      border: 1px solid black;
-      padding-right: 5px; 
-      
+.lastWeatherCards {
+
+  display: flex;
+  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  padding-left: 350px;
+  margin-top: 30px;
+
+
+}
+
+.additionCardInfo {
+
+
+  border: 1px solid black;
+  background-color: #e2d6d6;
+  padding: 0 25px;
+  border-radius: 10px;
+ 
+
+
+}
+
+/* Confirmation Pop up */
+.popUpScreen {
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  z-Index: 9999;
+  top: 0;
+  align-items: center;
+  margin-bottom: 50px;
+
+
+}
+
+.savedLocationCard {
+
+  background: #0f1720;
+  padding: 20;
+  border-radius: 12px;
+  min-width: none;
+  width: 300;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  top: 0;
+  margin-top: -350px;
+
+}
+
+.ConfirmationButtons {
+
+  display: flex;
+  gap: 8px;
+  justify-Content: flex-end;
+  margin-Top: 12px;
+  padding: 10px;
+
 }

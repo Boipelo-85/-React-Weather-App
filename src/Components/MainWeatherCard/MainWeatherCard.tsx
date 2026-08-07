@@ -319,27 +319,26 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </div>
                 </div>
                 <div className='last-card'>
-                    <div className='additionCardInfo'>
+                    <div className='lastWeatherCards'>
 
-                        <Text variant={'h3'} style={{ color: '#000', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
-                            FeelsLike
-                        </Text>
+                        <div className='additionCardInfo'>
 
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Feelslike</Text>
+                            <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
+
+                        </div>
+                        <div className='additionCardInfo'>
+
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Pressure</Text>
+                            <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
+                        </div>
+                        <div className='additionCardInfo'>
+
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Maintemp</Text>
+                            <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
+                        </div>
                     </div>
-                      <div className='additionCardInfo'>
 
-                        <Text variant={'h3'} style={{ color: '#000',  fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
-                            Pressure
-                        </Text>
-
-                    </div>
-                      <div className='additionCardInfo'>
-
-                        <Text variant={'h3'} style={{ color: '#000',  fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
-                            Mainwwwww
-                        </Text>
-
-                    </div>
 
                 </div>
             </div>
