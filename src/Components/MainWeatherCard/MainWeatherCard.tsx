@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { Text } from '../Text/Text';
-// import { DailyForecastItem } from '../ForecastPanel/DailyForecastItem';
+
 
 import { WindIcon } from 'lucide-react'
 import { WiHumidity } from "react-icons/wi";
