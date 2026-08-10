@@ -203,7 +203,7 @@ code {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .search-logo {
@@ -282,6 +282,7 @@ code {
   gap: 8px;
   padding: 5px;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 /* .search-content {
@@ -296,13 +297,13 @@ code {
 
 /* Main Weather Content Part */
 .switchButtons {
-
   display: flex;
   justify-content: flex-end;
   gap: 8px;
   margin-bottom: 12px;
-  margin-top: -70px;
-  
+  margin-top: -50px;
+  position: relative;
+  z-index: 2;
 }
 
 .weather-cards-container {
@@ -325,6 +326,13 @@ code {
 }
 
 @media (max-width: 1200px) {
+  .switchButtons {
+
+    margin-top: 30px;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+
+  }
 
   .nav {
     padding: 20px 24px;
@@ -347,8 +355,12 @@ code {
   }
 
   .search-bar {
-    width: 100%;
-  }
+  width: 100%;
+  padding: 10px 40px 10px 16px;
+  border-radius: 10px;
+  border: 1px solid white;
+  box-sizing: border-box;
+}
 
   .humbuger-button {
     margin-right: 0;
@@ -361,6 +373,11 @@ code {
 }
 
 @media (max-width: 1024px) {
+  .switchButtons {
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
   .nav {
     padding: 18px 20px;
     gap: 18px;
@@ -393,6 +410,17 @@ code {
 }
 
 @media (max-width: 768px) {
+  .switchButtons {
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .switchButtons button {
+    padding: 8px 14px;
+    min-width: 48px;
+  }
+
   .nav {
     padding: 16px 18px;
   }
@@ -401,12 +429,13 @@ code {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
+    gap: 10px;
   }
 
   .search-controls {
     width: 100%;
     max-width: none;
-    margin: 8px 0 0;
+    margin: 0;
     order: 3;
   }
 
@@ -429,11 +458,13 @@ code {
   .location {
     padding-right: 0;
     font-size: 16px;
+    width: 100%;
   }
 
   .humbuger-button {
     align-self: flex-end;
     margin-right: 0;
+    margin-left: 0;
   }
 
   .OuterButtonBugger {
@@ -447,6 +478,21 @@ code {
 }
 
 @media (max-width: 480px) {
+  .switchButtons {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .switchButtons button {
+    width: auto;
+    min-width: 44px;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
   .nav {
     padding: 14px 16px;
     gap: 10px;
@@ -458,6 +504,7 @@ code {
 
   .search-controls {
     min-width: 0;
+    width: 100%;
   }
 
   .search-logo {
@@ -477,6 +524,7 @@ code {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%;
   }
 
   .OuterButtonBugger {
@@ -492,6 +540,16 @@ code {
 }
 
 @media (max-width: 320px) {
+  .switchButtons {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .switchButtons button {
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
   .nav {
     padding: 12px 12px;
     gap: 8px;
@@ -499,6 +557,10 @@ code {
 
   .Heading-items {
     gap: 6px;
+  }
+
+  .search-controls {
+    width: 100%;
   }
 
   .search-logo {
@@ -514,6 +576,7 @@ code {
 
   .location {
     font-size: 13px;
+    width: 100%;
   }
 
   .OuterButtonBugger {

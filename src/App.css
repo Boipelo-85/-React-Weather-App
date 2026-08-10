@@ -126,7 +126,6 @@
   
 }/* Responsive app layout */
 @media (max-width: 1200px) {
-  
   #app-container {
     padding: 0 10px 120px;
   }
