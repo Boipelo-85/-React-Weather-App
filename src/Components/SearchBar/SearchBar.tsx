@@ -66,8 +66,10 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
 
           <Text variant={'span'} style={{ color: '#fdfdfd', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location} </Text>
 
-          <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
-          <input type="text" ref={inputRef} className='search-bar' placeholder='Search City' value={value} onChange={(e) => onChange(e.target.value)} />
+          <div className='search-controls'>
+            <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
+            <input type="text" ref={inputRef} className='search-bar' placeholder='Search City' value={value} onChange={(e) => onChange(e.target.value)} />
+          </div>
 
           <div className='humbuger-button'>
             <button

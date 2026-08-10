@@ -23,6 +23,8 @@ interface WeatherData {
     weather: { icon: string }[],
     minWeather: number,
     maxWeather: number,
+    feelsLike : number,
+    pressure : number
 
 
 }
@@ -32,9 +34,6 @@ interface MainWeatherCardProps {
 }
 
 export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
-
-
-
 
 
     const [weather, setWeather] = useState<WeatherData[] | null>(null);
@@ -79,6 +78,9 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             const currentTemp = Math.floor(geoResponse.data.main.temp);
             const currentWind = geoResponse.data.wind.speed;
             const currentHumidity = geoResponse.data.main.humidity;
+            const current_feel = geoResponse.data.main.feels_like;
+            const current_pressure = geoResponse.data.main.pressure;
+            
             // const currentIconCode = geoResponse.data.weather[0].icon;
 
             const minWeatherGet = Math.floor(geoResponse.data.main.temp_min);
@@ -114,6 +116,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     }),
                     weather: entries[0].weather[0].description, // pick first description
                     icon: entries[0].weather[0].icon,           // pick first icon
+                    
                     min: minTemp,
                     max: maxTemp
                 };
@@ -150,6 +153,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     icon: geoResponse.data.weather[0].icon,
                     // icon: iconMap[currentIconCode] || 'default_icon',
                     weather: geoResponse.data.weather,
+                    feelsLike : current_feel,
+                    pressure : current_pressure,
                     minWeather: minWeatherGet,
                     maxWeather: maxWeatherGet
 
@@ -162,7 +167,9 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     formattedData[0].wind_speed = currentWind,
                     formattedData[0].description = currentDescription,
                     formattedData[0].minWeather = minWeatherGet,
-                    formattedData[0].maxWeather = maxWeatherGet
+                    formattedData[0].maxWeather = maxWeatherGet,
+                    formattedData[0].feelsLike = current_feel,
+                    formattedData[0].pressure  = current_pressure
             }
             setWeather(formattedData)
             setDailyForecast(daily);
@@ -325,17 +332,26 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Feelslike</Text>
                             <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
+                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
+                            </Text>
 
                         </div>
                         <div className='additionCardInfo'>
 
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Pressure</Text>
                             <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
+                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
+                            </Text>
                         </div>
                         <div className='additionCardInfo'>
 
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Maintemp</Text>
                             <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
+                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
+                            </Text>
                         </div>
                     </div>
 
