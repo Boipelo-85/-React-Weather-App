@@ -2,6 +2,7 @@ import { Text } from '../Text/Text';
 import { FaLocationDot } from 'react-icons/fa6';
 import searchLoogo from '../../assets/searchbar.png'
 import { useEffect, useRef, useState } from 'react';
+import type { KeyboardEvent } from 'react';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import { SavedLocation } from '../../SavedLocation';
 
@@ -20,7 +21,8 @@ export type SearchProp = {
   savedLocations?: {name: string; lat: number; lon: number}[],
   onSelectSaved?: (name: string) => void,
   onRemoveSaved?: (name: string) => void,
-  activeCity?: string
+  activeCity?: string,
+  onSumit : () => void
 }
 
 export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onSuggestSave, savedLocations = [], onSelectSaved, onRemoveSaved, activeCity }) => {
@@ -28,6 +30,13 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      weatherSearch(inputRef.current?.value || '');
+    }
+  };
+
+  
   const weatherSearch = async (city: string, promptSave = true) => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_APP_ID}`;
@@ -69,10 +78,18 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
           <Text variant={'span'} style={{ paddingRight: '90px'}}><ThemeToggle /></Text>
 
           <Text variant={'span'} style={{ color: '#fdfdfd', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location},{weather?.country}</Text>
-
+ 
           <div className='search-controls'>
             <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
-            <input type="text" ref={inputRef} className='search-bar' placeholder='Search City' value={value} onChange={(e) => onChange(e.target.value)} />
+            <input
+              type="text"
+              ref={inputRef}
+              className='search-bar'
+              placeholder='Search City'
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              onKeyDown={onEnter}
+            />
           </div>
 
           <div className='humbuger-button'>

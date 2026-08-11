@@ -42,6 +42,11 @@ function App() {
     setShowSaveModal(true);
   }
 
+  const handleSearch = (city: string) => {
+    setCity(city);
+    setSearch('');
+  }
+
   const handleConfirmSave = () => {
     if (!candidateToSave) return;
     const exists = savedLocations.some(s => s.name.toLowerCase() === candidateToSave.name.toLowerCase());
@@ -77,7 +82,8 @@ function App() {
                           <SearchBar
                             value={search}
                             onChange={setSearch}
-                            onSearch={setCity}
+                            onSearch={handleSearch}
+                            onSumit={() => handleSearch(search)}
                             onSuggestSave={handleSuggestSave}
                             savedLocations={savedLocations}
                             activeCity={city}
