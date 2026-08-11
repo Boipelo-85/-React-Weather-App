@@ -36,20 +36,55 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
     }
   };
 
-  
+  const getCachedSearchLocation = (city: string): WeatherData | null => {
+    const normalizedCity = city.trim().toLowerCase();
+    const cacheKeys = [`search:${normalizedCity}`, normalizedCity];
+
+    for (const key of cacheKeys) {
+      const cached = localStorage.getItem(key);
+      if (!cached) continue;
+
+      try {
+        const parsed = JSON.parse(cached);
+
+        if (parsed?.location && parsed?.country) {
+          return { location: parsed.location, country: parsed.country };
+        }
+
+        if (parsed?.weather) {
+          return { location: city.trim(), country: '' };
+        }
+      } catch (error) {
+        console.error('Failed to read cached search data', error);
+      }
+    }
+
+    return null;
+  };
+
   const weatherSearch = async (city: string, promptSave = true) => {
+    const offCity = city.trim();
+    if (!offCity) return;
+
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_APP_ID}`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${offCity}&appid=${import.meta.env.VITE_APP_ID}`;
       const response = await fetch(url)
       const data = await response.json();
       console.log(data);
 
-      setWeather({ location: data.name,
-                country : data.sys.country
-      })
+      const searchResult = {
+        location: data.name,
+        country: data.sys.country
+      };
+
+      setWeather(searchResult);
+      localStorage.setItem(`search:${offCity.toLowerCase()}`, JSON.stringify({
+        ...searchResult,
+        timestamp: Date.now()
+      }));
 
       if (promptSave) {
-        onSearch(city)
+        onSearch(offCity)
         onChange('');
         if (data && data.coord && typeof onSuggestSave === 'function') {
           onSuggestSave({ name: data.name, lat: data.coord.lat, lon: data.coord.lon });
@@ -58,7 +93,24 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
 
     } catch (error) {
       console.error('Search failed', error);
-      
+
+      const cachedSearch = getCachedSearchLocation(offCity);
+      if (cachedSearch) {
+        setWeather(cachedSearch);
+
+        if (promptSave) {
+          onSearch(offCity);
+          onChange('');
+        }
+
+        console.log('Offline mode: loaded cached search data');
+        return;
+      }
+
+      if (promptSave) {
+        onSearch(offCity);
+        onChange('');
+      }
     }
   }
 
@@ -117,5 +169,4 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
     </div>
   )
 }
-
 export default SearchBar;

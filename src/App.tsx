@@ -85,7 +85,7 @@ function App() {
                             onSearch={handleSearch}
                             onSumit={() => handleSearch(search)}
                             onSuggestSave={handleSuggestSave}
-                            savedLocations={savedLocations}
+                            savedLocations={savedLocations} 
                             activeCity={city}
                             onSelectSaved={handleSelectSaved}
                             onRemoveSaved={handleRemoveSaved}
