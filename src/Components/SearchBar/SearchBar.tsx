@@ -49,6 +49,7 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
 
     } catch (error) {
       console.error('Search failed', error);
+      
     }
   }
 

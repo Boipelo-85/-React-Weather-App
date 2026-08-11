@@ -205,8 +205,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                 const parsed = JSON.parse(cached);
                 setWeather(parsed.weather);
                 setDailyForecast(parsed.dailyForecast);
-
                 console.log("Offline mode: loaded cached data");
+                
             }
         }
     }, [])
