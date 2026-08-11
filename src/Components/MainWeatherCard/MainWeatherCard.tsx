@@ -4,7 +4,7 @@ import { Text } from '../Text/Text';
 
 
 import { WindIcon } from 'lucide-react'
-import { WiHumidity } from "react-icons/wi";
+import { WiBarometer, WiHumidity, WiThermometer } from "react-icons/wi";
 import { FaEye } from "react-icons/fa";
 
 import { CartesianGrid, XAxis, YAxis, Tooltip, LineChart, Line, Legend, ResponsiveContainer } from "recharts";
@@ -23,8 +23,8 @@ interface WeatherData {
     weather: { icon: string }[],
     minWeather: number,
     maxWeather: number,
-    feelsLike : number,
-    pressure : number
+    feelsLike: number,
+    pressure: number
 
 
 }
@@ -62,10 +62,23 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
         try {
 
+            // 1. Check cache first
+            const cached = localStorage.getItem(city);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                const now = Date.now();
+
+                // Only use cache if less than 1 hour old
+                if (now - parsed.timestamp < 60 * 60 * 1000) {
+                    setWeather(parsed.weather);
+                    setDailyForecast(parsed.dailyForecast);
+                    console.log("Loaded from cache (fresh)");
+                    return; // Skip API call
+                }
+            }
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
 
             console.log(url);
-
 
             // const response = await fetch(url)
             // const data = await response.json();
@@ -78,9 +91,9 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             const currentTemp = Math.floor(geoResponse.data.main.temp);
             const currentWind = geoResponse.data.wind.speed;
             const currentHumidity = geoResponse.data.main.humidity;
-            const current_feel = geoResponse.data.main.feels_like;
-            const current_pressure = geoResponse.data.main.pressure;
-            
+            const current_feel = Math.floor(geoResponse.data.main.feels_like);
+            const current_pressure = Math.floor(geoResponse.data.main.pressure);
+
             // const currentIconCode = geoResponse.data.weather[0].icon;
 
             const minWeatherGet = Math.floor(geoResponse.data.main.temp_min);
@@ -116,7 +129,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     }),
                     weather: entries[0].weather[0].description, // pick first description
                     icon: entries[0].weather[0].icon,           // pick first icon
-                    
+
                     min: minTemp,
                     max: maxTemp
                 };
@@ -153,8 +166,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     icon: geoResponse.data.weather[0].icon,
                     // icon: iconMap[currentIconCode] || 'default_icon',
                     weather: geoResponse.data.weather,
-                    feelsLike : current_feel,
-                    pressure : current_pressure,
+                    feelsLike: current_feel,
+                    pressure: current_pressure,
                     minWeather: minWeatherGet,
                     maxWeather: maxWeatherGet
 
@@ -169,14 +182,32 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     formattedData[0].minWeather = minWeatherGet,
                     formattedData[0].maxWeather = maxWeatherGet,
                     formattedData[0].feelsLike = current_feel,
-                    formattedData[0].pressure  = current_pressure
+                    formattedData[0].pressure = current_pressure
             }
             setWeather(formattedData)
             setDailyForecast(daily);
 
+            localStorage.setItem(city, JSON.stringify({
+                weather: formattedData,
+                dailyForecast: daily,
+                timestamp: Date.now()
+            }));
+            console.log("Saved to cache");
+
         } catch (error) {
 
             console.error('Failed to fetch ', error)
+
+            // 4. Fallback to cache if offline
+            const cached = localStorage.getItem(city);
+            if (cached) {
+
+                const parsed = JSON.parse(cached);
+                setWeather(parsed.weather);
+                setDailyForecast(parsed.dailyForecast);
+
+                console.log("Offline mode: loaded cached data");
+            }
         }
     }, [])
 
@@ -309,7 +340,6 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                     <Line type="monotone" dataKey="humidity" stroke="#dc34ac" name="Humidity" />
                                 </LineChart>
                             </ResponsiveContainer>
-
                         )}
                     </div>
                     <div className='card-content'>
@@ -331,25 +361,24 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                         <div className='additionCardInfo'>
 
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Feelslike</Text>
-                            <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
-                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
-                                {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
+                            <Text variant={'h3'} ><WiThermometer style={{ color: '#000' }} /></Text>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                {currentWeather?.feelsLike ? `${currentWeather.feelsLike}°` : '--'}
                             </Text>
-
                         </div>
                         <div className='additionCardInfo'>
 
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Pressure</Text>
-                            <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
-                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
-                                {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
+                            <Text variant={'h3'} ><WiBarometer style={{ color: '#000' }} /></Text>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                {currentWeather?.pressure ? `${currentWeather.pressure} hPa` : '--'}
                             </Text>
                         </div>
                         <div className='additionCardInfo'>
 
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>Maintemp</Text>
                             <Text variant={'h3'} ><WiHumidity style={{ color: '#000' }} /></Text>
-                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
                             </Text>
                         </div>
