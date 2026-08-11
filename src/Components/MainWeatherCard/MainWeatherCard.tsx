@@ -26,15 +26,14 @@ interface WeatherData {
     feelsLike: number,
     pressure: number
 
-
 }
 
 interface MainWeatherCardProps {
     city?: string
-    coordinates?: {lat: number; lon: number}
+    coordinates?: { lat: number; lon: number } | null
 }
 
-export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city, coordinates }) => {
+export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
 
     const [weather, setWeather] = useState<WeatherData[] | null>(null);
@@ -57,16 +56,14 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city, coordina
         max: unit === 'C' ? item.max : Math.round(item.max * 9 / 5 + 32),
     }));
 
-    const weatherInfo = useCallback(async (city: string, coords?: {lat: number; lon: number}) => {
+    const weatherInfo = useCallback(async (city: string) => {
 
         // setLoading();
-
-        const cacheKey = coords ? `coords:${coords.lat},${coords.lon}` : city;
 
         try {
 
             // 1. Check cache first
-            const cached = localStorage.getItem(cacheKey);
+            const cached = localStorage.getItem(city);
             if (cached) {
                 const parsed = JSON.parse(cached);
                 const now = Date.now();
@@ -79,51 +76,31 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city, coordina
                     return; // Skip API call
                 }
             }
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
 
-            let lat: number, lon: number;
-            let currentDescription: string, currentTemp: number, currentWind: number, currentHumidity: number, current_feel: number, current_pressure: number, minWeatherGet: number, maxWeatherGet: number;
-            let visibility: number, icon: string, weatherData: any;
+            console.log(url);
 
-            if (coords) {
-                lat = coords.lat;
-                lon = coords.lon;
-                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
-                console.log(url);
+            // const response = await fetch(url)
+            // const data = await response.json();
+            // console.log(data);
+            // const icon = allIcons[data.weather[0].icon] || clear_icon;
 
-                const geoResponse = await axios.get(url);
-                currentDescription = geoResponse.data.weather[0].description;
-                currentTemp = Math.floor(geoResponse.data.main.temp);
-                currentWind = geoResponse.data.wind.speed;
-                currentHumidity = geoResponse.data.main.humidity;
-                current_feel = Math.floor(geoResponse.data.main.feels_like);
-                current_pressure = Math.floor(geoResponse.data.main.pressure);
-                minWeatherGet = Math.floor(geoResponse.data.main.temp_min);
-                maxWeatherGet = Math.floor(geoResponse.data.main.temp_max);
-                visibility = geoResponse.data.visibility / 1000;
-                icon = geoResponse.data.weather[0].icon;
-                weatherData = geoResponse.data.weather;
-            } else {
-                const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
-                console.log(url);
+            const geoResponse = await axios.get(url);
+            const { lat, lon } = geoResponse.data.coord;
+            const currentDescription = geoResponse.data.weather[0].description;
+            const currentTemp = Math.floor(geoResponse.data.main.temp);
+            const currentWind = geoResponse.data.wind.speed;
+            const currentHumidity = geoResponse.data.main.humidity;
+            const current_feel = Math.floor(geoResponse.data.main.feels_like);
+            const current_pressure = Math.floor(geoResponse.data.main.pressure);
 
-                const geoResponse = await axios.get(url);
-                lat = geoResponse.data.coord.lat;
-                lon = geoResponse.data.coord.lon;
-                currentDescription = geoResponse.data.weather[0].description;
-                currentTemp = Math.floor(geoResponse.data.main.temp);
-                currentWind = geoResponse.data.wind.speed;
-                currentHumidity = geoResponse.data.main.humidity;
-                current_feel = Math.floor(geoResponse.data.main.feels_like);
-                current_pressure = Math.floor(geoResponse.data.main.pressure);
-                minWeatherGet = Math.floor(geoResponse.data.main.temp_min);
-                maxWeatherGet = Math.floor(geoResponse.data.main.temp_max);
-                visibility = geoResponse.data.visibility / 1000;
-                icon = geoResponse.data.weather[0].icon;
-                weatherData = geoResponse.data.weather;
-            }
+            // const currentIconCode = geoResponse.data.weather[0].icon;
+
+            const minWeatherGet = Math.floor(geoResponse.data.main.temp_min);
+            const maxWeatherGet = Math.floor(geoResponse.data.main.temp_max);
 
             //Five days weather retrieves
-            const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
+            const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
             const forecastResponse = await axios.get(forecastUrl);
 
             console.log(forecastResponse.data);
@@ -168,6 +145,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city, coordina
 
             const maxHours = 24;
             // const tempCelsius = geoResponse.data.main.temp;
+            
             console.log(currentWeather?.icon);
             console.log(`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`);
 
@@ -185,10 +163,10 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city, coordina
                     humidity: data.hourly.relative_humidity_2m[index],
                     temperature: Math.floor(data.hourly.temperature_2m[index]),
                     description: currentDescription,
-                    visibility: visibility,
-                    icon: icon,
+                    visibility: geoResponse.data.visibility / 1000,
+                    icon: geoResponse.data.weather[0].icon,
                     // icon: iconMap[currentIconCode] || 'default_icon',
-                    weather: weatherData,
+                    weather: geoResponse.data.weather,
                     feelsLike: current_feel,
                     pressure: current_pressure,
                     minWeather: minWeatherGet,
@@ -210,7 +188,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city, coordina
             setWeather(formattedData)
             setDailyForecast(daily);
 
-            localStorage.setItem(cacheKey, JSON.stringify({
+            localStorage.setItem(city, JSON.stringify({
                 weather: formattedData,
                 dailyForecast: daily,
                 timestamp: Date.now()
@@ -222,7 +200,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city, coordina
             console.error('Failed to fetch ', error)
 
             // 4. Fallback to cache if offline
-            const cached = localStorage.getItem(cacheKey);
+            const cached = localStorage.getItem(city);
             if (cached) {
 
                 const parsed = JSON.parse(cached);
@@ -235,14 +213,12 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city, coordina
     }, [])
 
     useEffect(() => {
-        if (coordinates) {
-            weatherInfo(city || 'Current Location', coordinates);
-        } else if (city) {
+        if (city) {
             weatherInfo(city);
         } else {
             weatherInfo('Polokwane');
         }
-    }, [city, coordinates, weatherInfo])
+    }, [city, weatherInfo])
 
     const currentWeather = displayedWeather && displayedWeather.length > 0 ? displayedWeather[0] : null;
 

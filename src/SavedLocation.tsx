@@ -16,7 +16,7 @@ export const SavedLocation: React.FC<SavedLocationProps> = ({ savedLocations = [
   return (
     <div className='saved-locations' style={{background: '#0f1720', borderRadius: 12, padding: 12, color: '#fff', minWidth: 220}}>
       <Text variant={'h3'} style={{marginBottom: '12px'}}>Saved Locations</Text>
-      <div className='locations-list'>
+      <div className='locations-list scrollable-locations'>
         {savedLocations.length === 0 && (
           <Text variant={'span'} style={{opacity: 0.8}}>No saved locations</Text>
         )}
