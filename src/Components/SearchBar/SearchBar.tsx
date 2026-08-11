@@ -7,7 +7,8 @@ import { SavedLocation } from '../../SavedLocation';
 
 interface WeatherData {
     
-  location: string
+  location: string,
+  country : string
 }
 
 export type SearchProp = {
@@ -34,7 +35,9 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
       const data = await response.json();
       console.log(data);
 
-      setWeather({ location: data.name })
+      setWeather({ location: data.name,
+                country : data.sys.country
+      })
 
       if (promptSave) {
         onSearch(city)
@@ -61,10 +64,10 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
     <div>
       <nav className='nav'>
         <div className='Heading-items'>
-          <Text variant={'span'} style={{ color: '#fdfdfd', fontWeight: 'bold', fontSize: '30px', paddingRight: '15px', paddingLeft: '5px', fontFamily: "'Courier New', Courier, monospace" }}>Weather forecast</Text>
-          <Text variant={'span'} style={{ paddingRight: '120px'}}><ThemeToggle /></Text>
+          <Text variant={'span'} style={{ color: '#fdfdfd', fontWeight: 'bold', fontSize: '30px', paddingRight: '10px', paddingLeft: '5px', fontFamily: "'Courier New', Courier, monospace" }}>Weather forecast</Text>
+          <Text variant={'span'} style={{ paddingRight: '90px'}}><ThemeToggle /></Text>
 
-          <Text variant={'span'} style={{ color: '#fdfdfd', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location} </Text>
+          <Text variant={'span'} style={{ color: '#fdfdfd', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location},{weather?.country}</Text>
 
           <div className='search-controls'>
             <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
