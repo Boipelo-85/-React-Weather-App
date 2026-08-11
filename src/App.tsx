@@ -13,6 +13,8 @@ function App() {
 
   const [search,setSearch] = useState('');
   const [city,setCity] = useState('Polokwane');
+  const [coordinates, setCoordinates] = useState<{lat: number; lon: number} | null>(null);
+  const [isLocating, setIsLocating] = useState(true);
   const [savedLocations, setSavedLocations] = useState<{name: string; lat: number; lon: number;}[]>([]);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [candidateToSave, setCandidateToSave] = useState<{name: string; lat: number; lon: number;} | null>(null);
@@ -33,6 +35,41 @@ function App() {
       window.alert('Failed to save locations');
     }
   }, [savedLocations])
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setIsLocating(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setCoordinates({ lat: latitude, lon: longitude });
+
+        try {
+          const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${import.meta.env.VITE_APP_ID}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          setCity(data.name || 'Current Location');
+        } catch (error) {
+          console.error('Failed to get city name from coordinates', error);
+          setCity('Current Location');
+        }
+
+        setIsLocating(false);
+      },
+      () => {
+        console.log('Geolocation denied or failed, using default city');
+        setIsLocating(false);
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  }, [])
 
   const handleSuggestSave = (loc: {name: string; lat: number; lon: number}) => {
     const exists = savedLocations.some(s => s.name.toLowerCase() === loc.name.toLowerCase());
@@ -71,25 +108,36 @@ function App() {
     setSavedLocations(prev => prev.filter(p => p.name.toLowerCase() !== name.toLowerCase()));
   }
   return (
-    <>    
+    <>
 
         <div id='app-container'>
 
             <div id='main-content'>
 
                 <div id='sub-container'>
-                   
+
+                  {isLocating ? (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px', color: '#fff' }}>
+                      <div style={{ textAlign: 'center' }}>
+                        <div style={{ fontSize: '24px', marginBottom: '10px' }}>📍</div>
+                        <span style={{ fontSize: '16px', fontFamily: "'Courier New', Courier, monospace" }}>
+                          Detecting your location...
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
                           <SearchBar
                             value={search}
                             onChange={setSearch}
                             onSearch={handleSearch}
                             onSumit={() => handleSearch(search)}
                             onSuggestSave={handleSuggestSave}
-                            savedLocations={savedLocations} 
+                            savedLocations={savedLocations}
                             activeCity={city}
                             onSelectSaved={handleSelectSaved}
                             onRemoveSaved={handleRemoveSaved}
-                          /> 
+                          />
                           {/* <div id='DaysCard'>
                                        <DailyForecastItem />
                           </div>
@@ -102,16 +150,18 @@ function App() {
                             />
                           )}
                           <div className='weather-cards-container'>
-                            <MainWeatherCard city={city}/>
+                            <MainWeatherCard city={city} coordinates={coordinates}/>
                           </div>
-                        
+
                           {/* <div>
-                          
+
                             <ThemeToggle />
 
                           </div> */}
+                    </>
+                  )}
 
-                </div>              
+                </div>
             </div>
         </div>
 

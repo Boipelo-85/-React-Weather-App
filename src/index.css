@@ -71,7 +71,7 @@ body.dark-mode #social .button-icon {
 
 /* Dark mode specific component styles */
 body.dark-mode #app-container {
-  background-color: #1a1a2e;
+  background-color: #000;
 }
 
 body.dark-mode #main-content {
