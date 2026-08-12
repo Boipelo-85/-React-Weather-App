@@ -65,7 +65,7 @@ function App() {
       },
       {
         enableHighAccuracy: false,
-        timeout: 10000,
+        timeout: 5000,
         maximumAge: 0
       }
     );
@@ -119,7 +119,6 @@ function App() {
                   {isLocating ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px', color: '#fff' }}>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '24px', marginBottom: '10px' }}>📍</div>
                         <span style={{ fontSize: '16px', fontFamily: "'Courier New', Courier, monospace" }}>
                           Detecting your location...
                         </span>

@@ -299,7 +299,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
                     <div className='card-content'>
                         <div className='weatherItems'>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Wind</Text>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Wind   '  </Text>
                             <Text variant={'h3'} ><WindIcon style={{ color: '#000' }} /></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.wind_speed ? `${currentWeather.wind_speed} km/hr` : '--'}
@@ -342,7 +342,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                 </LineChart>
                             </ResponsiveContainer>
                         )}
-                    </div>
+                    </div> 
                     <div className='card-content'>
                         {displayedWeather && displayedWeather.slice(0, 7).map((item, index) => (
                             <div className='weatherItemsHourly' key={index}>
