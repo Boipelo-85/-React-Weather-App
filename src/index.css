@@ -78,7 +78,7 @@ body.dark-mode #main-content {
   background: #000;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
+} 
 
 /* body.dark-mode #sub-container {
   background: rgba(30, 31, 40, 0.6);
@@ -106,6 +106,28 @@ body.dark-mode .nav {
 body.dark-mode .last-card{
 
       background-color: #0f0f16;
+}
+body.dark-mode .recharts-cartesian-axis line,
+body.dark-mode .recharts-cartesian-axis text,
+body.dark-mode .recharts-cartesian-grid line,
+body.dark-mode .recharts-cartesian-grid line {
+
+  stroke: #fdfdfd; 
+
+}
+body.dark-mode .recharts-cartesian-axis line,
+body.dark-mode .recharts-cartesian-axis text {
+  stroke: #fdfdfd;   /* white lines */
+  fill: #fdfdfd;     /* white text */
+}
+
+body.dark-mode .recharts-cartesian-axis text {
+  stroke: #fdfdfd; /* outline color */
+  fill: #fdfdfd;   /* text fill color */
+}
+
+body.dark-mode .recharts-cartesian-axis line {
+  stroke: #fdfdfd; /* axis lines */
 }
 
 #root {
@@ -795,7 +817,7 @@ code {
   display: grid;
   grid-template-columns: minmax(360px, 415px) minmax(550px, 1.3fr);
   width: 100%;
-  gap: -5px;
+  gap: -5px; 
 
 }
 
@@ -861,7 +883,6 @@ code {
   /* background-image: url('./assets/cloudy.jpg'); */
   border-radius: 24px;
   background-color: #8593d8;
-
 }
 
 .picture-content {
@@ -1007,14 +1028,19 @@ code {
   padding: 5px;
   margin-left: -120px;
   width: 115%;
-  opacity: 10px;
+  opacity: 20px;
   flex-wrap: nowrap;
   gap: 5px;
+  overflow-y:hidden;
 
 }
 
+.dailyForecast-row {
+   -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 .forecast-card {
-
+  
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1049,7 +1075,7 @@ code {
   justify-content: center;
   align-items: center;
   gap: 100px;
-  padding-left: 420px;
+  padding-left: 420px;      
   margin-top: 30px;
 
 

@@ -12,7 +12,7 @@ import { SaveConfirmModal } from './Components/SavedLocations/SaveConfirmModal';
 function App() {
 
   const [search,setSearch] = useState('');
-  const [city,setCity] = useState('Polokwane');
+  const [city,setCity] = useState(' ');
   const [coordinates, setCoordinates] = useState<{lat: number; lon: number} | null>(null);
   const [isLocating, setIsLocating] = useState(true);
   const [savedLocations, setSavedLocations] = useState<{name: string; lat: number; lon: number;}[]>([]);
@@ -163,7 +163,6 @@ function App() {
                 </div>
             </div>
         </div>
-
     </>
   )
 }

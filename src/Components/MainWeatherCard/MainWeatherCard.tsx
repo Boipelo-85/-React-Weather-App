@@ -35,6 +35,18 @@ interface MainWeatherCardProps {
 
 export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
+    const [isDark, setIsDark] = useState<boolean>(false);
+
+    useEffect(() => {
+        const update = () => setIsDark(document.body.classList.contains('dark-mode'));
+        // set initial
+        update();
+        // watch for class changes on body so toggling theme updates chart colors
+        const obs = new MutationObserver(() => update());
+        obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        return () => obs.disconnect();
+    }, []);
+
 
     const [weather, setWeather] = useState<WeatherData[] | null>(null);
     const [dailyForecast, setDailyForecast] = useState<any[]>([]);
@@ -281,14 +293,14 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                         <div className='picture-content'>
                             {/* <img src={currentWeather?.icon} alt={currentWeather?.description} /> */}
                             <img
-                                style={{ paddingTop: '5px' }}
+                                style={{ paddingTop: '2px' }}
                                 src={`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`}
                                 alt="Weather icon"
                             />
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '60px', alignItems: 'center', marginTop: '-10px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '60px', alignItems: 'center', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
                                 {currentWeather?.temperature != null ? `${currentWeather.temperature}°${unit}` : `--°${unit}`}
                             </Text>
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '25px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
+                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '25px', paddingLeft: '25px', marginTop: '-30px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.description || 'Loading...'}
                             </Text>
                             <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '12px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
@@ -323,22 +335,21 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </div>
                 </div>
                 <div className='weatherDisplay'>
-                    <Text variant={'span'} style={{ color: '#000', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
+                    <Text variant={'span'} style={{ color: '#000 '  , paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
                         HourlyForecast
                     </Text>
-
                     <div className='hourlyData'>
                         {displayedWeather && (
                             <ResponsiveContainer width="90%" height={350}>
                                 <LineChart data={displayedWeather}>
-                                    <XAxis dataKey="hour" stroke="#fff" />
-                                    <YAxis stroke="#fff" />
-                                    <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                                    <XAxis dataKey="hour"  />
+                                    <YAxis />
+                                    
                                     <Tooltip />
                                     <Legend />
-                                    <Line type="monotone" dataKey="wind_speed" stroke="#8884d8" name="Wind Speed" />
-                                    <Line type="monotone" dataKey="temperature" stroke="#82ca9d" name="Temperature" />
-                                    <Line type="monotone" dataKey="humidity" stroke="#dc34ac" name="Humidity" />
+                                    <Line dataKey="wind_speed" stroke={ '#8884d8'} name="Wind Speed" />
+                                    <Line type="monotone" dataKey="temperature" stroke={ '#82ca9d'} name="Temperature" />
+                                    <Line type="monotone" dataKey="humidity" stroke={ '#dc34ac'} name="Humidity" />
                                 </LineChart>
                             </ResponsiveContainer>
                         )}

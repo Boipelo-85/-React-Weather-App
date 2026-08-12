@@ -4,11 +4,10 @@
   min-height: calc(100vh - 100px);
   width: 100%;
   padding: 0 10px 140px;
-  
   left: 0;
   background: transparent;
   padding-top: 20px;
-  /* background-color: #938a89; */
+  /* background-color: #938a89; */    
   background-image: url('./assets/background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
@@ -25,7 +24,6 @@
   width: min(100%, 1100px);
   max-width: 1100px;
   backdrop-filter: blur();
-
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3);
@@ -93,7 +91,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  width: 90%;
+  width: 100%;
   color: #fdfdfd;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background-color: transparent;
