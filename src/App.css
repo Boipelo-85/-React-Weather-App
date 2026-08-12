@@ -7,8 +7,8 @@
   left: 0;
   background: transparent;
   padding-top: 20px;
-  /* background-color: #938a89; */    
-  background-image: url('./assets/background.jpg');
+  background-color: #e0e6eb;    
+  /* background-image: url('./assets/background.jpg'); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -25,7 +25,7 @@
   max-width: 1100px;
   backdrop-filter: blur();
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid #5e5e5ef1;
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3);
   overflow: hidden;
   padding-bottom: 120px;
@@ -244,4 +244,9 @@
     width: 100%;
     margin-right: 0;
   }
+}
+#Location-name{
+
+      margin-left: -780px;
+      margin-top: -10px;
 }

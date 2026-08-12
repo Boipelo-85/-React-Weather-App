@@ -28,7 +28,7 @@ export type SearchProp = {
 export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onSuggestSave, savedLocations = [], onSelectSaved, onRemoveSaved, activeCity }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
+  // const [menuOpen, setMenuOpen] = useState(false);
 
   const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -127,9 +127,8 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
       <nav className='nav'>
         <div className='Heading-items'>
           <Text variant={'span'} style={{ color: '#fdfdfd', fontWeight: 'bold', fontSize: '30px', paddingRight: '10px', paddingLeft: '5px', fontFamily: "'Courier New', Courier, monospace" }}>Weather forecast</Text>
-          <Text variant={'span'} style={{ paddingRight: '90px'}}><ThemeToggle /></Text>
-
-          <Text variant={'span'} style={{ color: '#fdfdfd', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location},{weather?.country}</Text>
+          
+          {/* <Text variant={'span'} style={{ color: '#fdfdfd', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location},{weather?.country}</Text> */}
  
           <div className='search-controls'>
             <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
@@ -143,8 +142,9 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
               onKeyDown={onEnter}
             />
           </div>
+          <Text variant={'span'} style={{ paddingRight: '0px'}}><ThemeToggle /></Text>
 
-          <div className='humbuger-button'>
+          {/* <div className='humbuger-button'>
             <button
               type='button'
               onClick={() => setMenuOpen(prev => !prev)}
@@ -163,7 +163,7 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
                 </div>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </nav>
     </div>

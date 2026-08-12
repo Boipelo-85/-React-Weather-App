@@ -71,11 +71,11 @@ body.dark-mode #social .button-icon {
 
 /* Dark mode specific component styles */
 body.dark-mode #app-container {
-  background-color: #000;
+  background-color: #0a151f;
 }
 
 body.dark-mode #main-content {
-  background: #000;
+  background: #0a151f;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 } 
@@ -341,8 +341,8 @@ code {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  margin-bottom: 12px;
-  margin-top: -50px;
+  margin-bottom: 50px;
+  margin-top: -80px;
   position: relative;
   z-index: 2;
 }
@@ -1076,13 +1076,12 @@ code {
   align-items: center;
   gap: 100px;
   padding-left: 420px;      
-  margin-top: 30px;
+  margin-top: 30px;    
 
 
 }
 
 .additionCardInfo {
-
 
   border: 1px solid rgb(255, 255, 255);
   background-color: #e2d6d6;

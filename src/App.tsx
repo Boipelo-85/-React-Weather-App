@@ -7,12 +7,14 @@ import { MainWeatherCard } from './Components/MainWeatherCard/MainWeatherCard';
 import { SearchBar } from './Components/SearchBar/SearchBar';
 
 import { SaveConfirmModal } from './Components/SavedLocations/SaveConfirmModal';
+import { FaLocationDot } from 'react-icons/fa6';
+import { Text } from './Components/Text/Text';
 
 
 function App() {
 
   const [search,setSearch] = useState('');
-  const [city,setCity] = useState(' ');
+  const [city,setCity] = useState('');
   const [coordinates, setCoordinates] = useState<{lat: number; lon: number} | null>(null);
   const [isLocating, setIsLocating] = useState(true);
   const [savedLocations, setSavedLocations] = useState<{name: string; lat: number; lon: number;}[]>([]);
@@ -141,13 +143,16 @@ function App() {
                                        <DailyForecastItem />
                           </div>
                            */}
-                          {showSaveModal && candidateToSave && (
+                          {/* {showSaveModal && candidateToSave && (
                             <SaveConfirmModal
                               cityName={candidateToSave.name}
                               onConfirm={handleConfirmSave}
                               onCancel={handleCancelSave}
                             />
-                          )}
+                          )} */}
+                          <div id='Location-name'>
+                             <Text variant={'span'} style={{ color: '#000', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '40px',fontWeight:'bold'}}> <FaLocationDot className='location' /> {city} </Text>
+                          </div>
                           <div className='weather-cards-container'>
                             <MainWeatherCard city={city} coordinates={coordinates}/>
                           </div>

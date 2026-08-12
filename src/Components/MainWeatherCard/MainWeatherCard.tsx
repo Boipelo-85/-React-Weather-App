@@ -268,7 +268,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                 </button>
             </div>
 
-            <div className='dailyForecast-row'>
+            {/* <div className='dailyForecast-row'>
 
                 {displayedDailyForecast.slice(0, 7).map((item, index) => (
 
@@ -285,7 +285,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                         </span>
                     </div>
                 ))}
-            </div>
+            </div> */}
 
             <div className='main-weather-row'>
                 <div className='main-weather-card'>
@@ -338,7 +338,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     <Text variant={'span'} style={{ color: '#000 '  , paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
                         HourlyForecast
                     </Text>
-                    <div className='hourlyData'>
+                    {/* <div className='hourlyData'>
                         {displayedWeather && (
                             <ResponsiveContainer width="90%" height={350}>
                                 <LineChart data={displayedWeather}>
@@ -352,7 +352,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                 </LineChart>
                             </ResponsiveContainer>
                         )}
-                    </div> 
+                    </div>  */}
                     <div className='card-content'>
                         {displayedWeather && displayedWeather.slice(0, 7).map((item, index) => (
                             <div className='weatherItemsHourly' key={index}>
@@ -366,7 +366,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                         ))}
                     </div>
                 </div>
-                <div className='last-card'>
+                {/* <div className='last-card'>
                     <div className='lastWeatherCards'>
 
                         <div className='additionCardInfo'>
@@ -396,7 +396,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </div>
 
 
-                </div>
+                </div> */}
             </div>
         </>
     )
