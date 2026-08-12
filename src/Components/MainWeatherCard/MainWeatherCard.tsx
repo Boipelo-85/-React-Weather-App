@@ -342,12 +342,11 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                         {displayedWeather && (
                             <ResponsiveContainer width="90%" height={350}>
                                 <LineChart data={displayedWeather}>
-                                    <XAxis dataKey="hour"  />
-                                    <YAxis />
-                                    
+                                    <XAxis dataKey="hour" stroke={isDark ? '#fdfdfd' : '#000'} />
+                                    <YAxis stroke={isDark ? '#fdfdfd' : '#000'} />
                                     <Tooltip />
                                     <Legend />
-                                    <Line dataKey="wind_speed" stroke={ '#8884d8'} name="Wind Speed" />
+                                    <Line type="monotone" dataKey="wind_speed" stroke={ '#8884d8'} name="Wind Speed" />
                                     <Line type="monotone" dataKey="temperature" stroke={ '#82ca9d'} name="Temperature" />
                                     <Line type="monotone" dataKey="humidity" stroke={ '#dc34ac'} name="Humidity" />
                                 </LineChart>
