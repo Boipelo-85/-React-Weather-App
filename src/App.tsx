@@ -6,7 +6,6 @@ import './App.css'
 import { MainWeatherCard } from './Components/MainWeatherCard/MainWeatherCard';
 import { SearchBar } from './Components/SearchBar/SearchBar';
 
-import { SaveConfirmModal } from './Components/SavedLocations/SaveConfirmModal';
 import { FaLocationDot } from 'react-icons/fa6';
 import { Text } from './Components/Text/Text';
 
@@ -18,8 +17,6 @@ function App() {
   const [coordinates, setCoordinates] = useState<{lat: number; lon: number} | null>(null);
   const [isLocating, setIsLocating] = useState(true);
   const [savedLocations, setSavedLocations] = useState<{name: string; lat: number; lon: number;}[]>([]);
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [candidateToSave, setCandidateToSave] = useState<{name: string; lat: number; lon: number;} | null>(null);
 
   useEffect(() => {
     try {
@@ -77,28 +74,12 @@ function App() {
     const exists = savedLocations.some(s => s.name.toLowerCase() === loc.name.toLowerCase());
     
     if (exists) return; 
-    setCandidateToSave(loc);
-    setShowSaveModal(true);
+    setSavedLocations(prev => [...prev, loc]);
   }
 
   const handleSearch = (city: string) => {
     setCity(city);
     setSearch('');
-  }
-
-  const handleConfirmSave = () => {
-    if (!candidateToSave) return;
-    const exists = savedLocations.some(s => s.name.toLowerCase() === candidateToSave.name.toLowerCase());
-    if (!exists) {
-      setSavedLocations(prev => [...prev, candidateToSave]);
-    }
-    setCandidateToSave(null);
-    setShowSaveModal(false);
-  }
-
-  const handleCancelSave = () => {
-    setCandidateToSave(null);
-    setShowSaveModal(false);
   }
 
   const handleSelectSaved = (name: string) => {
@@ -109,11 +90,25 @@ function App() {
   const handleRemoveSaved = (name: string) => {
     setSavedLocations(prev => prev.filter(p => p.name.toLowerCase() !== name.toLowerCase()));
   }
+
+    const handleBookmark = (loc: { name: string; lat: number; lon: number }) => {
+      const exists = savedLocations.some(
+        s => s.name.toLowerCase() === loc.name.toLowerCase());
+
+      if (exists) {
+        window.alert(`${loc.name} is already saved!`);
+      } else {
+        setSavedLocations(prev => [...prev, loc]);
+        window.alert(`${loc.name} has been saved to your locations!`);
+      }
+
+      localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
+      console.log(savedLocations)
+    };
   return (
     <>
 
         <div id='app-container'>
-
             <div id='main-content'>
 
                 <div id='sub-container'>
@@ -138,6 +133,7 @@ function App() {
                             activeCity={city}
                             onSelectSaved={handleSelectSaved}
                             onRemoveSaved={handleRemoveSaved}
+                            onBookmark={handleBookmark}
                           />
                           {/* <div id='DaysCard'>
                                        <DailyForecastItem />

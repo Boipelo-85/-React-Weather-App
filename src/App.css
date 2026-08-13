@@ -1,17 +1,19 @@
 #app-container {
 
-  position: absolute;
-  min-height: calc(100vh - 100px);
-  width: 100%;
-  padding: 0 10px 140px;
+  position: fixed;
+  top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px 0;
   background: transparent;
-  padding-top: 20px;
   background-color: #e0e6eb;    
   /* background-image: url('./assets/background.jpg'); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  overflow: hidden;
+  z-index: 1;
 
   /* background-image: url('./assets/dinning.jpg');
   background-repeat: no-repeat; */
@@ -22,14 +24,22 @@
 
   margin: 40px auto 0;
   width: min(100%, 1100px);
-  max-width: 1100px;
+  max-width: 100%;
   backdrop-filter: blur();
   border-radius: 20px;
   border: 1px solid #5e5e5ef1;
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3);
   overflow: hidden;
-  padding-bottom: 120px;
+ 
+  padding-bottom: 410px;
+  height: calc(100vh - 145px);
+  margin-top: 30px;
   
+  
+}
+#sub-container::-webkit-scrollbar {
+  
+  display: none;
 }
 
 #sub-container {
@@ -42,10 +52,16 @@
   margin: 40px 40px;
   padding-right: 10px;
   margin-right: 40px;
-  padding-bottom: 140px;
+  padding-bottom: 50px;
   align-items: center;
+  height: 100%;
+  overflow-y: auto;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
 
 }
+
+
 #DaysCard{
 
     background-color: #fdfdfd;
@@ -54,6 +70,29 @@
     width: 110%;
     margin-right: 10px;
 
+}
+
+body.dark-mode #app-container {
+  background-color: #102131;
+}
+
+body.dark-mode #main-content {
+  background-color: #102131;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode #sub-container {
+  background-color: #102131;
+}
+
+body.dark-mode #DaysCard {
+  background-color: #1f2028;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .weather-cards-container {
+  background-color: transparent;
 }
 
 .forecast-row {
@@ -125,15 +164,13 @@
   
 }/* Responsive app layout */
 @media (max-width: 1200px) {
-  #app-container {
-    padding: 0 10px 120px;
-  }
-
   #main-content {
     width: min(100%, 1000px);
     max-width: 1000px;
     margin: 32px auto 0;
     padding-bottom: 100px;
+    height: calc(100vh - 112px);
+    margin-top: 72px;
   }
 
   #sub-container {
@@ -142,6 +179,8 @@
     padding: 80px 40px 110px;
     margin: 32px 16px;
     margin-right: 16px;
+    height: 100%;
+    overflow-y: auto;
   }
 
   #DaysCard {
@@ -151,21 +190,21 @@
 }
 
 @media (max-width: 1024px) {
-  #app-container {
-    padding: 0 10px 100px;
-  }
-
   #main-content {
     width: 100%;
     max-width: 960px;
     margin: 28px auto 0;
     padding-bottom: 90px;
+    height: calc(100vh - 108px);
+    margin-top: 68px;
   }
 
   #sub-container {
     padding: 60px 30px 90px;
     margin: 28px 12px;
     max-width: 740px;
+    height: 100%;
+    overflow-y: auto;
   }
 
   #DaysCard {
@@ -175,16 +214,14 @@
 }
 
 @media (max-width: 768px) {
-  #app-container {
-    padding: 0 8px 90px;
-  }
-
   #main-content {
     width: 100%;
     max-width: 100%;
     margin: 24px auto 0;
     border-radius: 18px;
     padding-bottom: 80px;
+    height: calc(100vh - 104px);
+    margin-top: 64px;
   }
 
   #sub-container {
@@ -193,6 +230,8 @@
     padding: 48px 24px 80px;
     margin: 24px 8px;
     margin-right: 8px;
+    height: 100%;
+    overflow-y: auto;
   }
 
   #DaysCard {
@@ -202,20 +241,20 @@
 }
 
 @media (max-width: 480px) {
-  #app-container {
-    padding: 0 6px 80px;
-  }
-
   #main-content {
     width: 100%;
     margin: 20px auto 0;
     padding-bottom: 70px;
+    height: calc(100vh - 100px);
+    margin-top: 60px;
   }
 
   #sub-container {
     padding: 32px 18px 60px;
     margin: 18px 4px;
     border-radius: 16px;
+    height: 100%;
+    overflow-y: auto;
   }
 
   #DaysCard {
@@ -225,19 +264,19 @@
 }
 
 @media (max-width: 320px) {
-  #app-container {
-    padding: 0 4px 70px;
-  }
-
   #main-content {
     width: 100%;
     margin: 16px auto 0;
     padding-bottom: 60px;
+    height: calc(100vh - 96px);
+    margin-top: 56px;
   }
 
   #sub-container {
     padding: 24px 12px 50px;
     margin: 16px 4px;
+    height: 100%;
+    overflow-y: auto;
   }
 
   #DaysCard {

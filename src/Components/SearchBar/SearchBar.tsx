@@ -1,5 +1,6 @@
 import { Text } from '../Text/Text';
 import { FaLocationDot } from 'react-icons/fa6';
+import { FaBookmark } from 'react-icons/fa';
 import searchLoogo from '../../assets/searchbar.png'
 import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
@@ -22,12 +23,14 @@ export type SearchProp = {
   onSelectSaved?: (name: string) => void,
   onRemoveSaved?: (name: string) => void,
   activeCity?: string,
-  onSumit : () => void
+  onSumit : () => void,
+  onBookmark?: (loc: {name: string; lat: number; lon: number}) => void
 }
 
-export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onSuggestSave, savedLocations = [], onSelectSaved, onRemoveSaved, activeCity }) => {
+export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onSuggestSave, savedLocations = [], onSelectSaved, onRemoveSaved, activeCity, onBookmark }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [currentCoords, setCurrentCoords] = useState<{lat: number; lon: number} | null>(null);
   // const [menuOpen, setMenuOpen] = useState(false);
 
   const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -78,6 +81,7 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
       };
 
       setWeather(searchResult);
+      setCurrentCoords({ lat: data.coord.lat, lon: data.coord.lon });
       localStorage.setItem(`search:${offCity.toLowerCase()}`, JSON.stringify({
         ...searchResult,
         timestamp: Date.now()
@@ -114,7 +118,11 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
     }
   }
 
-  // When an active city is provided (e.g., selected from saved list), fetch its weather without prompting to save
+  const handleBookmark = () => {
+    if (weather && currentCoords && onBookmark) {
+      onBookmark({ name: weather.location, lat: currentCoords.lat, lon: currentCoords.lon });
+    }
+  };
   
   useEffect(() => {
     if (activeCity) {
@@ -141,9 +149,18 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
               onChange={(e) => onChange(e.target.value)}
               onKeyDown={onEnter}
             />
+           
           </div>
           <Text variant={'span'} style={{ paddingRight: '0px'}}><ThemeToggle /></Text>
-
+          
+           <button 
+              type='button'
+              onClick={handleBookmark}
+              className='bookmark-button'
+              title='Save location'
+            >
+              <FaBookmark />
+            </button>
           {/* <div className='humbuger-button'>
             <button
               type='button'

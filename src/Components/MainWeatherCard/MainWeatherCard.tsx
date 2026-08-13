@@ -24,7 +24,8 @@ interface WeatherData {
     minWeather: number,
     maxWeather: number,
     feelsLike: number,
-    pressure: number
+    pressure: number,
+    dateTime: string
 
 }
 
@@ -106,6 +107,28 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             const current_feel = Math.floor(geoResponse.data.main.feels_like);
             const current_pressure = Math.floor(geoResponse.data.main.pressure);
 
+            const timestamp = geoResponse.data.dt * 1000; // convert seconds → ms
+            const dateObj = new Date(timestamp);
+
+            // Format date as "13 Aug 2026"
+            const datePart = dateObj.toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+
+            // Format time as "17:30"
+            const timePart = dateObj.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            });
+
+            // Combine
+            const formattedDateTime = `${datePart} ${timePart}`;
+
+            console.log(formattedDateTime);
+
             // const currentIconCode = geoResponse.data.weather[0].icon;
 
             const minWeatherGet = Math.floor(geoResponse.data.main.temp_min);
@@ -157,9 +180,10 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
             const maxHours = 24;
             // const tempCelsius = geoResponse.data.main.temp;
-            
-            console.log(currentWeather?.icon);
-            console.log(`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`);
+
+            const currentIcon = geoResponse.data.weather[0].icon;
+            console.log(currentIcon);
+            console.log(`https://openweathermap.org/img/wn/${currentIcon}`);
 
 
             const currentHour = new Date().getHours();
@@ -182,8 +206,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     feelsLike: current_feel,
                     pressure: current_pressure,
                     minWeather: minWeatherGet,
-                    maxWeather: maxWeatherGet
-
+                    maxWeather: maxWeatherGet,
+                    dateTime: formattedDateTime.toString()
 
                 }));
 
@@ -199,6 +223,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             }
             setWeather(formattedData)
             setDailyForecast(daily);
+            console.log(`Current Date & Time: ${formattedData[0].dateTime}`);
 
             localStorage.setItem(city, JSON.stringify({
                 weather: formattedData,
@@ -270,7 +295,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
             {/* <div className='dailyForecast-row'>
 
-                {displayedDailyForecast.slice(0, 7).map((item, index) => (
+                {displayedDailyForecast.slice(0, 5).map((item, index) => (
 
                     <div key={index} className="forecast-pill-content">
                         <Text variant={'span'} style={{ fontSize: '15px', fontWeight: 700, fontFamily: "'Courier New', Courier, monospace" }}>
@@ -286,7 +311,9 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </div>
                 ))}
             </div> */}
-
+            <div className='dateAndTime'>
+                <Text variant={'span'} style={{color:'#000',marginTop: '10px',fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold'}}>{currentWeather?.dateTime}</Text>
+            </div>
             <div className='main-weather-row'>
                 <div className='main-weather-card'>
                     <div className='card-image-container'>
@@ -310,7 +337,20 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </div>
 
                     <div className='card-content'>
-                        <div className='weatherItems'>
+
+                        
+                        {displayedWeather && displayedWeather.slice(0, 5).map((item, index) => (
+                            <div className='weatherItemsHourly' key={index}>
+                                <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                    {item.hour}
+                                </Text>
+                                <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                    {item.temperature}°{unit}
+                                </Text>
+                            </div>
+                        ))}
+                 
+                        {/* <div className='weatherItems'>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Wind   '  </Text>
                             <Text variant={'h3'} ><WindIcon style={{ color: '#000' }} /></Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
@@ -331,13 +371,13 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.visibility ? `${currentWeather.visibility}km` : '10km'}
                             </Text>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
-                <div className='weatherDisplay'>
-                    <Text variant={'span'} style={{ color: '#000 '  , paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
+                {/* <div className='weatherDisplay'>
+                    <Text variant={'span'} style={{ color: '#000 ', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
                         HourlyForecast
-                    </Text>
+                    </Text> */}
                     {/* <div className='hourlyData'>
                         {displayedWeather && (
                             <ResponsiveContainer width="90%" height={350}>
@@ -353,7 +393,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                             </ResponsiveContainer>
                         )}
                     </div>  */}
-                    <div className='card-content'>
+                    {/* <div className='card-content'>
                         {displayedWeather && displayedWeather.slice(0, 7).map((item, index) => (
                             <div className='weatherItemsHourly' key={index}>
                                 <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
@@ -364,8 +404,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                 </Text>
                             </div>
                         ))}
-                    </div>
-                </div>
+                    </div> */}
+                {/* </div> */}
                 {/* <div className='last-card'>
                     <div className='lastWeatherCards'>
 
@@ -397,6 +437,23 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
 
                 </div> */}
+                <div className='hoour'>
+                        {displayedDailyForecast.slice(0, 5).map((item, index) => (
+
+                    <div key={index} className="forecast-pill-content">
+                        <Text variant={'span'} style={{ fontSize: '15px', fontWeight: 700, fontFamily: "'Courier New', Courier, monospace" }}>
+                            {item.day} {item.max}°{unit}
+                        </Text>
+                        <span>
+                            <img
+                                src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
+                                alt={item.weather}
+                                className='forecast-icon'
+                            />
+                        </span>
+                    </div>
+                ))}
+                    </div>
             </div>
         </>
     )
