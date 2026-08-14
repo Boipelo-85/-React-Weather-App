@@ -3,9 +3,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { Text } from '../Text/Text';
 
 
-import { WindIcon } from 'lucide-react'
-// import { WiBarometer, WiHumidity, WiThermometer } from "react-icons/wi";
-import { FaEye } from "react-icons/fa";
+// import { WindIcon } from 'lucide-react'
+// // import { WiBarometer, WiHumidity, WiThermometer } from "react-icons/wi";
+// import { FaEye } from "react-icons/fa";
 
 // import { CartesianGrid, XAxis, YAxis, Tooltip, LineChart, Line, Legend, ResponsiveContainer } from "recharts";
 
@@ -32,9 +32,10 @@ interface WeatherData {
 interface MainWeatherCardProps {
     city?: string
     coordinates?: { lat: number; lon: number } | null
+    searchTrigger?: number
 }
 
-export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
+export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTrigger }) => {
 
     const [isDark, setIsDark] = useState<boolean>(false);
     
@@ -52,6 +53,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
     const [weather, setWeather] = useState<WeatherData[] | null>(null);
     const [dailyForecast, setDailyForecast] = useState<any[]>([]);
     const [unit, setUnit] = useState<'C' | 'F'>('C');
+    const [forecastView, setForecastView] = useState<'hourly' | 'daily'>('hourly');
 
     const convertTemp = (value: number) => unit === 'C' ? Math.round(value) : Math.round(value * 9 / 5 + 32);
     // const formatTemp = (value?: number, fallback = '--') => value != null ? `${convertTemp(value)}°${unit}` : `${fallback}°${unit}`;
@@ -71,11 +73,11 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
     const weatherInfo = useCallback(async (city: string) => {
 
-        // setLoading();
+        // setLoading);
 
         try {
 
-            
+
 
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
 
@@ -85,44 +87,37 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             // const data = await response.json();
             // console.log(data);
             // const icon = allIcons[data.weather[0].icon] || clear_icon;
-                // 1. Check cache first
-        
-            const cached = localStorage.getItem(city);
-            if (cached) {
-                const parsed = JSON.parse(cached);
-                const now = Date.now();
+                // 1. Check cache first (disabled to ensure fresh time on search)
 
-                if (now - parsed.timestamp < 60 * 60 * 1000) {
-                    // Use cached weather + forecast
-                    
-                    setWeather(parsed.weather);
-                    setDailyForecast(parsed.dailyForecast);
+            // const cached = localStorage.getItem(city);
+            // if (cached) {
+            //     const parsed = JSON.parse(cached);
+            //     const now = Date.now();
 
-                    // 🔑 But still fetch current time for location
-                    const timeResponse = await axios.get(url);
-                    const timestamp = timeResponse.data.dt * 1000;
-                    const dateObj = new Date(timestamp);
+            //     if (now - parsed.timestamp < 60 * 60 * 1000) {
+            //         // Use current local time instead of API timestamp
+            //         const nowDate = new Date();
+            //         const formattedDateTime = nowDate.toLocaleString("en-GB", {
+            //             day: "2-digit",
+            //             month: "short",
+            //             year: "numeric",
+            //             hour: "2-digit",
+            //             minute: "2-digit",
+            //             hour12: false
+            //         });
 
-                    const formattedDateTime = dateObj.toLocaleString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: false
-                    });
+            //         // Update cached weather with current local time
+            //         const weatherWithFreshTime = parsed.weather.map((item: any, idx: number) =>
+            //             idx === 0 ? { ...item, dateTime: formattedDateTime } : item
+            //         );
 
-                    // Update only the time field
-                    setWeather(prev =>
-                        prev?.map((item, idx) =>
-                            idx === 0 ? { ...item, dateTime: formattedDateTime } : item
-                        ) || null
-                    );
+            //         setWeather(weatherWithFreshTime);
+            //         setDailyForecast(parsed.dailyForecast);
 
-                    console.log("Loaded from cache (fresh) + updated time");
-                    return; // Skip full API call
-                }
-            }
+            //         console.log("Loaded from cache (fresh) with current local time");
+            //         return; // Skip full API call
+            //     }
+            // }
             const geoResponse = await axios.get(url);
             const { lat, lon } = geoResponse.data.coord;
             const currentDescription = geoResponse.data.weather[0].description;
@@ -132,32 +127,23 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             const current_feel = Math.floor(geoResponse.data.main.feels_like);
             const current_pressure = Math.floor(geoResponse.data.main.pressure);
 
-            const timestamp = geoResponse.data.dt * 1000; // convert seconds → ms
-            const dateObj = new Date(timestamp);
-
-            // Format date as "13 Aug 2026"
-            const datePart = dateObj.toLocaleDateString("en-GB", {
+            // Use current local time instead of API timestamp
+            const nowDate = new Date();
+            const formattedDateTime = nowDate.toLocaleString("en-GB", {
                 day: "2-digit",
                 month: "short",
-                year: "numeric"
-            });
-
-            // Format time as "17:30"
-            const timePart = dateObj.toLocaleTimeString([], {
+                year: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: false
             });
-
-            // Combine
-            const formattedDateTime = `${datePart} ${timePart}`;
 
             console.log(formattedDateTime);
 
             // const currentIconCode = geoResponse.data.weather[0].icon;
 
             const minWeatherGet = Math.floor(geoResponse.data.main.temp_min);
-            const maxWeatherGet = Math.floor(geoResponse.data.main.temp_max);
+            const maxWeatherGet = Math.floor(geoResponse.data.main.temp_max);  
 
             //Five days weather retrieves
             const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
@@ -174,7 +160,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                 grouped[date].push(item);
             });
 
-            // Now reduce each date group into one summary
+            // Now reduce each date group into one summary 
 
             const daily = Object.keys(grouped).map(date => {
                 const entries = grouped[date];
@@ -189,7 +175,6 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     }),
                     weather: entries[0].weather[0].description, // pick first description
                     icon: entries[0].weather[0].icon,           // pick first icon
-
                     min: minTemp,
                     max: maxTemp
                 };
@@ -254,6 +239,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                 localStorage.setItem(city, JSON.stringify({
                 weather: formattedData.map(({ dateTime, ...rest }) => rest), // strip dateTime
                 dailyForecast: daily,
+
             }));
 
             console.log("Saved to cache");
@@ -281,7 +267,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
         } else {
             weatherInfo('Polokwane');
         }
-    }, [city, weatherInfo])
+    }, [city, searchTrigger ,weatherInfo])
 
     const currentWeather = displayedWeather && displayedWeather.length > 0 ? displayedWeather[0] : null;
 
@@ -317,6 +303,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                 >
                     °F
                 </button>
+              
             </div>
 
             {/* <div className='dailyForecast-row'>
@@ -337,35 +324,39 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                     </div>
                 ))}
             </div> */}
-            <div className='dateAndTime'>
+            {/* <div className='dateAndTime'>
                 <Text variant={'span'} style={{color:'#000',marginTop: '10px',fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold'}}>{currentWeather?.dateTime}</Text>
-            </div>
+            </div> */}
             <div className='main-weather-row'>
-                <div className='main-weather-card'>
-                    <div className='card-image-container'>
-                        <div className='picture-content'>
-                            {/* <img src={currentWeather?.icon} alt={currentWeather?.description} /> */}
+                
+             
+                        <div className='weather-show'>
+
+                                {/* <img src={currentWeather?.icon} alt={currentWeather?.description} /> */}
                             <img
                                 style={{ paddingTop: '2px' }}
                                 src={`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`}
                                 alt="Weather icon"
                             />
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '60px', alignItems: 'center', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '60px',marginTop:'-20px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
                                 {currentWeather?.temperature != null ? `${currentWeather.temperature}°${unit}` : `--°${unit}`}
                             </Text>
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '25px', paddingLeft: '25px', marginTop: '-30px', fontFamily: "'Courier New', Courier, monospace" }}>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '25px', marginTop:'-20px',fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.description || 'Loading...'}
                             </Text>
-                            <Text variant={'h3'} style={{ color: '#fdfdfd', fontSize: '12px', paddingLeft: '25px', marginTop: '-20px', fontFamily: "'Courier New', Courier, monospace" }}>
+                            <Text variant={'h3'} style={{ color: '#000', fontSize: '20px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 H: {currentWeather?.maxWeather != null ? `${currentWeather.maxWeather}°${unit}` : `--°${unit}`} | L: {currentWeather?.minWeather != null ? `${currentWeather.minWeather}°${unit}` : `--°${unit}`}
                             </Text>
-                        </div>
-                    </div>
+                     
 
-                    <div className='card-content'>
+                        </div>
+                            
+                  
+
+                    
 
                         
-                        {displayedWeather && displayedWeather.slice(0, 5).map((item, index) => (
+                        {/* {displayedWeather && displayedWeather.slice(0, 5).map((item, index) => (
                             <div className='weatherItemsHourly' key={index}>
                                 <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>
                                     {item.hour}
@@ -374,7 +365,84 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                                     {item.temperature}°{unit}
                                 </Text>
                             </div>
-                        ))}
+                        ))} */}
+                    <div className='dailySwitch'>
+                          <button
+                    type='button'
+                    onClick={() => setForecastView('hourly')}
+                    style={{
+                        padding: '8px 16px',
+                        borderRadius: '999px',
+                        border: forecastView === 'hourly' ? '1px solid #fff' : '1px solid #999',
+                        background: forecastView === 'hourly' ? '#000' : '#fff',
+                        color: forecastView === 'hourly' ? '#fff' : '#000',
+                        cursor: 'pointer',
+                        marginLeft: '10px'
+                    }}
+                >
+                    Hourly
+                </button>
+                <button
+                    type='button'
+                    onClick={() => setForecastView('daily')}
+                    style={{
+                        padding: '8px 16px',
+                        borderRadius: '999px',
+                        border: forecastView === 'daily' ? '1px solid #fff' : '1px solid #999',
+                        background: forecastView === 'daily' ? '#000' : '#fff',
+                        color: forecastView === 'daily' ? '#fff' : '#000',
+                        cursor: 'pointer'
+                    }}
+                >
+                    Daily
+                </button>
+                    </div>
+                    {/* Forecast View Toggle */}
+                    <div>
+
+                    
+                    {forecastView === 'hourly' && (
+                        <div className='card-content'>
+                            {displayedWeather && displayedWeather.slice(0, 5).map((item, index) => (
+                                <div className='forecast-pill-content' key={index}>
+                                    <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                        {item.hour}
+                                    </Text>
+                                   
+                                    <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                        {item.temperature}°{unit}
+                                    </Text>
+                                     <span>
+                                        <img
+                                            src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
+                                            alt='${item.weather}'
+                                            className='forecast-icon'
+                                        />
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {forecastView === 'daily' && (
+                        <div className='card-content'>
+                            {displayedDailyForecast.slice(0, 5).map((item, index) => (
+                                <div key={index} className="forecast-pill-content">
+                                    <Text variant={'span'} style={{ color:'#000',fontSize: '15px', fontWeight: 700, fontFamily: "'Courier New', Courier, monospace" }}>
+                                        {item.day} {item.max}°{unit}
+                                    </Text>
+                                    <span>
+                                        <img
+                                            src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
+                                            alt={item.weather}
+                                            className='forecast-icon'
+                                        />
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    </div>
                  
                         {/* <div className='weatherItems'>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '10px', fontFamily: "'Courier New', Courier, monospace" }}>Wind   '  </Text>
@@ -399,7 +467,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                             </Text>
                         </div> */}
                     </div>
-                </div>
+               
                 {/* <div className='weatherDisplay'>
                     <Text variant={'span'} style={{ color: '#000 ', paddingRight: '350px', fontSize: '20px', fontWeight: 'bold', fontFamily: "'Courier New', Courier, monospace" }}>
                         HourlyForecast
@@ -463,7 +531,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
 
                 </div> */}
-                <div className='hoour'>
+                {/* <div className='hoour'>
                         {displayedDailyForecast.slice(0, 5).map((item, index) => (
 
                     <div key={index} className="forecast-pill-content">
@@ -479,8 +547,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
                         </span>
                     </div>
                 ))}
-                    </div>
-            </div>
+                    </div> */}
+          
         </>
     )
 }

@@ -130,7 +130,7 @@ body.dark-mode .weather-cards-container {
   display: flex;
   align-items: center;
   gap: 5px;
-  width: 100%;
+  width: 50%;
   color: #fdfdfd;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background-color: transparent;
@@ -286,6 +286,9 @@ body.dark-mode .weather-cards-container {
 }
 #Location-name{
 
-      margin-left: -780px;
-      margin-top: -10px;
+      /* margin-left: -780px;
+      margin-top: -10px; */
+      justify-content: center;
+      align-items: center;
+
 }

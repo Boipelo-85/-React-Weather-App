@@ -13,7 +13,8 @@ import { Text } from './Components/Text/Text';
 function App() {
 
   const [search,setSearch] = useState('');
-  const [city,setCity] = useState('');
+  const [city,setCity] = useState('Polokwane');
+  const [searchTrigger, setSearchTrigger] = useState(0);
   const [coordinates, setCoordinates] = useState<{lat: number; lon: number} | null>(null);
   const [isLocating, setIsLocating] = useState(true);
   const [savedLocations, setSavedLocations] = useState<{name: string; lat: number; lon: number;}[]>([]);
@@ -78,17 +79,25 @@ function App() {
   }
 
   const handleSearch = (city: string) => {
+
     setCity(city);
     setSearch('');
+    setSearchTrigger(prev => prev + 1);
+
   }
 
   const handleSelectSaved = (name: string) => {
+
     setSearch('');
     setCity(name);
+    setSearchTrigger(prev => prev + 1);
+
   }
 
   const handleRemoveSaved = (name: string) => {
+
     setSavedLocations(prev => prev.filter(p => p.name.toLowerCase() !== name.toLowerCase()));
+
   }
 
     const handleBookmark = (loc: { name: string; lat: number; lon: number }) => {
@@ -105,6 +114,7 @@ function App() {
       localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
       console.log(savedLocations)
     };
+    
   return (
     <>
 
@@ -150,7 +160,7 @@ function App() {
                              <Text variant={'span'} style={{ color: '#000', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '40px',fontWeight:'bold'}}> <FaLocationDot className='location' /> {city} </Text>
                           </div>
                           <div className='weather-cards-container'>
-                            <MainWeatherCard city={city} coordinates={coordinates}/>
+                            <MainWeatherCard city={city} coordinates={coordinates} searchTrigger={searchTrigger}/>
                           </div>
 
                           {/* <div>
