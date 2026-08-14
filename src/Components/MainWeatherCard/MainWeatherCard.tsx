@@ -4,10 +4,10 @@ import { Text } from '../Text/Text';
 
 
 import { WindIcon } from 'lucide-react'
-import { WiBarometer, WiHumidity, WiThermometer } from "react-icons/wi";
+// import { WiBarometer, WiHumidity, WiThermometer } from "react-icons/wi";
 import { FaEye } from "react-icons/fa";
 
-import { CartesianGrid, XAxis, YAxis, Tooltip, LineChart, Line, Legend, ResponsiveContainer } from "recharts";
+// import { CartesianGrid, XAxis, YAxis, Tooltip, LineChart, Line, Legend, ResponsiveContainer } from "recharts";
 
 import axios from "axios";
 
@@ -37,7 +37,7 @@ interface MainWeatherCardProps {
 export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
     const [isDark, setIsDark] = useState<boolean>(false);
-
+    
     useEffect(() => {
         const update = () => setIsDark(document.body.classList.contains('dark-mode'));
         // set initial
@@ -75,20 +75,8 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
 
         try {
 
-            // 1. Check cache first
-            const cached = localStorage.getItem(city);
-            if (cached) {
-                const parsed = JSON.parse(cached);
-                const now = Date.now();
+            
 
-                // Only use cache if less than 1 hour old
-                if (now - parsed.timestamp < 60 * 60 * 1000) {
-                    setWeather(parsed.weather);
-                    setDailyForecast(parsed.dailyForecast);
-                    console.log("Loaded from cache (fresh)");
-                    return; // Skip API call
-                }
-            }
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
 
             console.log(url);
@@ -97,7 +85,44 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             // const data = await response.json();
             // console.log(data);
             // const icon = allIcons[data.weather[0].icon] || clear_icon;
+                // 1. Check cache first
+        
+            const cached = localStorage.getItem(city);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                const now = Date.now();
 
+                if (now - parsed.timestamp < 60 * 60 * 1000) {
+                    // Use cached weather + forecast
+                    
+                    setWeather(parsed.weather);
+                    setDailyForecast(parsed.dailyForecast);
+
+                    // 🔑 But still fetch current time for location
+                    const timeResponse = await axios.get(url);
+                    const timestamp = timeResponse.data.dt * 1000;
+                    const dateObj = new Date(timestamp);
+
+                    const formattedDateTime = dateObj.toLocaleString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false
+                    });
+
+                    // Update only the time field
+                    setWeather(prev =>
+                        prev?.map((item, idx) =>
+                            idx === 0 ? { ...item, dateTime: formattedDateTime } : item
+                        ) || null
+                    );
+
+                    console.log("Loaded from cache (fresh) + updated time");
+                    return; // Skip full API call
+                }
+            }
             const geoResponse = await axios.get(url);
             const { lat, lon } = geoResponse.data.coord;
             const currentDescription = geoResponse.data.weather[0].description;
@@ -225,11 +250,12 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city }) => {
             setDailyForecast(daily);
             console.log(`Current Date & Time: ${formattedData[0].dateTime}`);
 
-            localStorage.setItem(city, JSON.stringify({
-                weather: formattedData,
+                    // Save to cache WITHOUT dateTime
+                localStorage.setItem(city, JSON.stringify({
+                weather: formattedData.map(({ dateTime, ...rest }) => rest), // strip dateTime
                 dailyForecast: daily,
-                timestamp: Date.now()
             }));
+
             console.log("Saved to cache");
 
         } catch (error) {
