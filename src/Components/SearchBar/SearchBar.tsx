@@ -19,17 +19,25 @@ export type SearchProp = {
   onSuggestSave?: (loc: {name: string; lat: number; lon: number}) => void,
   activeCity?: string,
   onSumit : () => void,
-  onBookmark?: (loc: {name: string; lat: number; lon: number}) => void
+  onBookmark?: (loc: {name: string; lat: number; lon: number}) => void,
+  inputRef?: React.RefObject<HTMLInputElement | null>
 }
 
-export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onSuggestSave, activeCity, onBookmark }) => {
-  const inputRef = useRef<HTMLInputElement>(null)
+export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onSuggestSave, activeCity, onBookmark, inputRef: externalInputRef }) => {
+  const internalInputRef = useRef<HTMLInputElement>(null)
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [currentCoords, setCurrentCoords] = useState<{lat: number; lon: number} | null>(null);
 
+  const setInputRef = (node: HTMLInputElement | null) => {
+    internalInputRef.current = node;
+    if (externalInputRef) {
+      (externalInputRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+    }
+  };
+
   const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      weatherSearch(inputRef.current?.value || '');
+      weatherSearch(internalInputRef.current?.value || '');
     }
   };
 
@@ -112,6 +120,10 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
     }
   }
 
+  const handleSearchClick = () => {
+    weatherSearch(internalInputRef.current?.value || '');
+  }
+
   const handleBookmark = () => {
     if (weather && currentCoords && onBookmark) {
       onBookmark({ name: weather.location, lat: currentCoords.lat, lon: currentCoords.lon });
@@ -133,10 +145,10 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
           {/* <Text variant={'span'} style={{ color: '#fdfdfd', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '20px' }}> <FaLocationDot className='location' />{weather?.location},{weather?.country}</Text> */}
  
           <div className='search-controls'>
-            <img src={searchLoogo} alt='search logo' className='search-logo' onClick={() => weatherSearch(inputRef.current?.value || '')} />
+            <img src={searchLoogo} alt='search logo' className='search-logo' onClick={handleSearchClick} />
             <input
               type="text"
-              ref={inputRef}
+              ref={setInputRef}
               className='search-bar'
               placeholder='Search City'
               value={value}

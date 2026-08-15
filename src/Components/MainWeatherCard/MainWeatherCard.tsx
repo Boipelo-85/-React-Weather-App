@@ -428,7 +428,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTri
 
                     {forecastView === 'daily' && (
                         <div className='card-content'>
-                            {displayedDailyForecast.slice(0, 5).map((item, index) => (
+                            {displayedDailyForecast.slice(0, 6).map((item, index) => (
                                 <div key={index} className="forecast-pill-content">
                                     <Text variant={'span'} style={{ color:'#000',fontSize: '15px', fontWeight: 700, fontFamily: "'Courier New', Courier, monospace" }}>
                                         {item.day} {item.max}°{unit}

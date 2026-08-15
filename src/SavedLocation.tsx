@@ -1,3 +1,4 @@
+import { FaTrash } from 'react-icons/fa';
 import { Text } from './Components/Text/Text';
 
 export type SavedLocationItem = {
@@ -14,7 +15,7 @@ export type SavedLocationProps = {
 
 export const SavedLocation: React.FC<SavedLocationProps> = ({ savedLocations = [], onSelect, onRemove }) => {
   return (
-    <div className='saved-locations' style={{background: '#0f1720', borderRadius: 12, padding: 12, color: '#fff', minWidth: 220}}>
+    <div className='saved-locations' style={{background: '#e0e6eb', borderRadius: 12, padding: 12, color: '#000', minWidth: 220}}>
       <Text variant={'h3'} style={{marginBottom: '12px'}}>Saved Locations</Text>
       <div className='locations-list scrollable-locations'>
         {savedLocations.length === 0 && (
@@ -34,7 +35,7 @@ export const SavedLocation: React.FC<SavedLocationProps> = ({ savedLocations = [
                 onClick={() => onRemove && onRemove(location.name)}
                 style={{background: 'transparent', border: 'none', color: '#fff', fontSize: 18, cursor: 'pointer'}}
               >
-                ×
+               <FaTrash title='delete' style={{color : '#000'}}/>
               </button>
             </div>
           </div>
