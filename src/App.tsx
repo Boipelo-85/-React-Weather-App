@@ -5,6 +5,7 @@ import './App.css'
 // import { Header } from './Components/Header/Header';
 import { MainWeatherCard } from './Components/MainWeatherCard/MainWeatherCard';
 import { SearchBar } from './Components/SearchBar/SearchBar';
+import { SavedLocation } from './SavedLocation';
 
 import { FaLocationDot } from 'react-icons/fa6';
 import { Text } from './Components/Text/Text';
@@ -18,6 +19,7 @@ function App() {
   const [coordinates, setCoordinates] = useState<{lat: number; lon: number} | null>(null);
   const [isLocating, setIsLocating] = useState(true);
   const [savedLocations, setSavedLocations] = useState<{name: string; lat: number; lon: number;}[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -87,11 +89,10 @@ function App() {
   }
 
   const handleSelectSaved = (name: string) => {
-
+    setMenuOpen(false);
     setSearch('');
     setCity(name);
     setSearchTrigger(prev => prev + 1);
-
   }
 
   const handleRemoveSaved = (name: string) => {
@@ -139,12 +140,31 @@ function App() {
                             onSearch={handleSearch}
                             onSumit={() => handleSearch(search)}
                             onSuggestSave={handleSuggestSave}
-                            savedLocations={savedLocations}
                             activeCity={city}
-                            onSelectSaved={handleSelectSaved}
-                            onRemoveSaved={handleRemoveSaved}
                             onBookmark={handleBookmark}
                           />
+                          <div id='Location-name'>
+                          <div className='humbuger-button'>
+                            <button
+                              type='button'
+                              onClick={() => setMenuOpen(prev => !prev)}
+                              className='OuterButtonBugger'
+                              title='saved location section'
+                            >
+                              ☰
+                            </button>
+                            {menuOpen && (
+                              <div className='openButton'>
+                                <div style={{padding: '8px'}}>
+                                  <SavedLocation
+                                    savedLocations={savedLocations}
+                                    onSelect={handleSelectSaved}
+                                    onRemove={handleRemoveSaved}
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
                           {/* <div id='DaysCard'>
                                        <DailyForecastItem />
                           </div>
@@ -156,8 +176,8 @@ function App() {
                               onCancel={handleCancelSave}
                             />
                           )} */}
-                          <div id='Location-name'>
-                             <Text variant={'span'} style={{ color: '#000', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '40px',fontWeight:'bold'}}> <FaLocationDot className='location' /> {city} </Text>
+                          
+                             <Text variant={'span'} style={{ color: '#000', paddingRight: '5px', fontFamily: "'Courier New', Courier, monospace", fontSize: '40px',fontWeight:'bold',marginLeft:'300px'}}> <FaLocationDot className='location' /> {city} </Text>
                           </div>
                           <div className='weather-cards-container'>
                             <MainWeatherCard city={city} coordinates={coordinates} searchTrigger={searchTrigger}/>

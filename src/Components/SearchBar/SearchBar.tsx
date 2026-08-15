@@ -1,11 +1,9 @@
 import { Text } from '../Text/Text';
-import { FaLocationDot } from 'react-icons/fa6';
 import { FaBookmark } from 'react-icons/fa';
 import searchLoogo from '../../assets/searchbar.png'
 import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
-import { SavedLocation } from '../../SavedLocation';
 
 interface WeatherData {
     
@@ -19,19 +17,15 @@ export type SearchProp = {
   onChange: (value: string) => void,
   onSearch: (city: string) => void,
   onSuggestSave?: (loc: {name: string; lat: number; lon: number}) => void,
-  savedLocations?: {name: string; lat: number; lon: number}[],
-  onSelectSaved?: (name: string) => void,
-  onRemoveSaved?: (name: string) => void,
   activeCity?: string,
   onSumit : () => void,
   onBookmark?: (loc: {name: string; lat: number; lon: number}) => void
 }
 
-export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onSuggestSave, savedLocations = [], onSelectSaved, onRemoveSaved, activeCity, onBookmark }) => {
+export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onSuggestSave, activeCity, onBookmark }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [currentCoords, setCurrentCoords] = useState<{lat: number; lon: number} | null>(null);
-  // const [menuOpen, setMenuOpen] = useState(false);
 
   const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -157,30 +151,10 @@ export const SearchBar: React.FC<SearchProp> = ({ value, onChange, onSearch, onS
               type='button'
               onClick={handleBookmark}
               className='bookmark-button'
-              title='Save location'
+              title='save location'
             >
               <FaBookmark />
             </button>
-          {/* <div className='humbuger-button'>
-            <button
-              type='button'
-              onClick={() => setMenuOpen(prev => !prev)}
-              className='OuterButtonBugger'
-            >
-              ☰
-            </button>
-            {menuOpen && (
-              <div className='openButton'>
-                <div style={{padding: '8px'}}>
-                  <SavedLocation
-                    savedLocations={savedLocations}
-                    onSelect={name => { setMenuOpen(false); onSelectSaved && onSelectSaved(name); }}
-                    onRemove={name => onRemoveSaved && onRemoveSaved(name)}
-                  />
-                </div>
-              </div>
-            )}
-          </div> */}
         </div>
       </nav>
     </div>

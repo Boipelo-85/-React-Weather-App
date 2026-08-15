@@ -290,5 +290,7 @@ body.dark-mode .weather-cards-container {
       margin-top: -10px; */
       justify-content: center;
       align-items: center;
+      display: flex;
+      gap: 5px;
 
 }

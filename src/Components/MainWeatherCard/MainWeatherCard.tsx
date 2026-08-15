@@ -135,7 +135,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTri
                 year: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
-                hour12: false
+                hour12: true
             });
 
             console.log(formattedDateTime);
@@ -203,6 +203,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTri
                     hour: new Date(time).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
+                        hour12: true
 
                     }),
                     wind_speed: data.hourly.wind_speed_10m[index],
@@ -403,15 +404,16 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTri
                     
                     {forecastView === 'hourly' && (
                         <div className='card-content'>
-                            {displayedWeather && displayedWeather.slice(0, 5).map((item, index) => (
+                            {displayedWeather && displayedWeather.slice(0, 6).map((item, index) => (
                                 <div className='forecast-pill-content' key={index}>
-                                    <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                    <span  style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>
                                         {item.hour}
-                                    </Text>
+                                    </span>
                                    
-                                    <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>
+                                    {/* <Text variant={'h3'} style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>
                                         {item.temperature}°{unit}
-                                    </Text>
+                                    </Text> */}
+
                                      <span>
                                         <img
                                             src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`}
