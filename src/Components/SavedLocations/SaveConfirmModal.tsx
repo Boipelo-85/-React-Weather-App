@@ -1,9 +1,11 @@
 import { Text } from '../Text/Text';
 
 export type SaveConfirmCityProps = {
+
   cityName: string;
   onConfirm: () => void;
   onCancel: () => void;
+  
 }
 
 export const SaveConfirmModal: React.FC<SaveConfirmCityProps> = ({ cityName, onConfirm, onCancel }) => {
@@ -18,7 +20,6 @@ export const SaveConfirmModal: React.FC<SaveConfirmCityProps> = ({ cityName, onC
         </div>
       </div>
     </div>
-
   )
 }
 
