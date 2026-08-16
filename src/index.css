@@ -177,11 +177,6 @@ body.dark-mode #Location-name {
   color: #f3f4f6;
 }
 
-body.dark-mode #Location-name span,
-body.dark-mode #Location-name .location {
-  color: #fdfdfd !important;
-}
-
 body.dark-mode .switchButtons button {
   color: #f3f4f6;
   border-color: #4b5563;
@@ -211,38 +206,6 @@ body.dark-mode .nav {
 body.dark-mode .last-card{
 
       background-color: #fdfdfd;
-}
-body.dark-mode .recharts-cartesian-axis line,
-body.dark-mode .recharts-cartesian-axis text,
-body.dark-mode .recharts-cartesian-grid line,
-body.dark-mode .recharts-cartesian-grid line {
-
-  stroke: #fdfdfd; 
-
-}
-body.dark-mode .recharts-cartesian-axis line,
-body.dark-mode .recharts-cartesian-axis text {
-  stroke: #fdfdfd;   /* white lines */
-  fill: #fdfdfd;     /* white text */
-}
-
-body.dark-mode .recharts-cartesian-axis text {
-  stroke: #fdfdfd; /* outline color */
-  fill: #fdfdfd;   /* text fill color */
-}
-
-body.dark-mode .recharts-cartesian-axis line {
-  stroke: #fdfdfd; /* axis lines */
-}
-
-/* MainWeatherCard dark mode visibility fixes */
-body.dark-mode .weather-show,
-body.dark-mode .weather-show h3,
-body.dark-mode .weather-show span,
-body.dark-mode .forecast-pill-content,
-body.dark-mode .forecast-pill-content span,
-body.dark-mode .forecast-pill-content text {
-  color: #fdfdfd !important;
 }
 
 #root {
