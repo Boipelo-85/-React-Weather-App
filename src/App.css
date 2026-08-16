@@ -94,7 +94,11 @@ body.dark-mode #DaysCard {
 body.dark-mode .weather-cards-container {
   background-color: transparent;
 }
+body.dark-mode span{
 
+    color: #fdfdfd;
+
+}
 .forecast-row {
   
   display: flex;

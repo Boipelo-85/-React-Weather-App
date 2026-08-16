@@ -339,23 +339,21 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTri
                                 src={`https://openweathermap.org/img/wn/${currentWeather?.icon}@4x.png`}
                                 alt="Weather icon"
                             />
+                            
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '60px',marginTop:'-20px', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>
                                 {currentWeather?.temperature != null ? `${currentWeather.temperature}°${unit}` : `--°${unit}`}
                             </Text>
-                            <Text variant={'h3'} style={{ color: '#000', fontSize: '25px', marginTop:'-20px',fontFamily: "'Courier New', Courier, monospace" }}>
+
+                            <Text variant={'h3'}  style={{ color: '#000', fontSize: '25px', marginTop:'-20px',fontFamily: "'Courier New', Courier, monospace" }}>
                                 {currentWeather?.description || 'Loading...'}
                             </Text>
                             <Text variant={'h3'} style={{ color: '#000', fontSize: '20px', fontFamily: "'Courier New', Courier, monospace" }}>
                                 H: {currentWeather?.maxWeather != null ? `${currentWeather.maxWeather}°${unit}` : `--°${unit}`} | L: {currentWeather?.minWeather != null ? `${currentWeather.minWeather}°${unit}` : `--°${unit}`}
                             </Text>
                      
-
                         </div>
                             
                   
-
-                    
-
                         
                         {/* {displayedWeather && displayedWeather.slice(0, 5).map((item, index) => (
                             <div className='weatherItemsHourly' key={index}>
@@ -404,7 +402,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTri
                     
                     {forecastView === 'hourly' && (
                         <div className='card-content'>
-                            {displayedWeather && displayedWeather.slice(0, 6).map((item, index) => (
+                            {displayedWeather && displayedWeather.slice(0, 5).map((item, index) => (
                                 <div className='forecast-pill-content' key={index}>
                                     <span  style={{ color: '#000', fontSize: '15px', fontFamily: "'Courier New', Courier, monospace" }}>
                                         {item.hour}
@@ -428,7 +426,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTri
 
                     {forecastView === 'daily' && (
                         <div className='card-content'>
-                            {displayedDailyForecast.slice(0, 6).map((item, index) => (
+                            {displayedDailyForecast.slice(0, 5).map((item, index) => (
                                 <div key={index} className="forecast-pill-content">
                                     <Text variant={'span'} style={{ color:'#000',fontSize: '15px', fontWeight: 700, fontFamily: "'Courier New', Courier, monospace" }}>
                                         {item.day} {item.max}°{unit}

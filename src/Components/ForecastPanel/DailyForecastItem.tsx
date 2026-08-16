@@ -1,4 +1,4 @@
-import { Text } from '../Text/Text';
+// import { Text } from '../Text/Text';
 
 interface ForecastItemData {
   day: string;
@@ -26,11 +26,11 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({ forecastDa
     { day: 'Wed', temperature: 23, icon: '☀️' },
   ];
 
-  const items = forecastData.length > 0 ? forecastData : defaultForecastData;
+  // const items = forecastData.length > 0 ? forecastData : defaultForecastData;
 
   return (
     <div className='forecast-row'>
-      {items.map((item, index) => {
+      {/* {items.map((item, index) => {
         const isToday = item.day === 'Today';
 
         return ( 
@@ -46,7 +46,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({ forecastDa
             </div>
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 };
