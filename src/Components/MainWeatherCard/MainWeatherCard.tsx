@@ -442,6 +442,7 @@ export const MainWeatherCard: React.FC<MainWeatherCardProps> = ({ city,searchTri
                             ))}
                         </div>
                     )}
+                    
                     </div>
                  
                         {/* <div className='weatherItems'>

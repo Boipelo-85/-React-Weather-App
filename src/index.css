@@ -177,6 +177,11 @@ body.dark-mode #Location-name {
   color: #f3f4f6;
 }
 
+body.dark-mode #Location-name span,
+body.dark-mode #Location-name .location {
+  color: #fdfdfd !important;
+}
+
 body.dark-mode .switchButtons button {
   color: #f3f4f6;
   border-color: #4b5563;
@@ -206,6 +211,25 @@ body.dark-mode .nav {
 body.dark-mode .last-card{
 
       background-color: #fdfdfd;
+}
+
+/* MainWeatherCard dark mode visibility fixes */
+body.dark-mode .weather-show,
+body.dark-mode .weather-show h3,
+body.dark-mode .weather-show span,
+body.dark-mode .weather-show Text,
+body.dark-mode .forecast-pill-content,
+body.dark-mode .forecast-pill-content span,
+body.dark-mode .forecast-pill-content text,
+body.dark-mode .forecast-pill-content Text,
+body.dark-mode .card-content,
+body.dark-mode .card-content span,
+body.dark-mode .card-content Text,
+body.dark-mode .main-weather-row,
+body.dark-mode .main-weather-row span,
+body.dark-mode .main-weather-row Text,
+body.dark-mode .dailySwitch {
+  color: #fdfdfd !important;
 }
 
 #root {
